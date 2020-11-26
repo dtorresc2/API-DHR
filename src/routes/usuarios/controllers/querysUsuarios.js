@@ -16,7 +16,7 @@ const obtenerListadoUsuarios = () => {
 
       mysqlConnection.query(query, (err, rows, fields) => {
          if (!err) {
-            resolve(rows[0]);
+            resolve(rows);
          }
          else {
             reject('Error');
@@ -59,10 +59,14 @@ const registrarUsuario = ({ CODIGO, NOMBRE, URL, FECHA, APP, WEB }) => {
 
       mysqlConnection.query(query, [CODIGO, NOMBRE, URL, FECHA, APP, WEB], (err, rows, fields) => {
          if (!err) {
-            resolve(rows[0]);
+            resolve(
+               {ID: rows.insertId , MENSAJE: "USUARIO REGISTRADO"}
+            );
          }
          else {
-            reject('Error');
+            reject(
+               {ID: -1 , MENSAJE: "ERROR", ERROR : rows.message}
+            );
          }
       });
    });
