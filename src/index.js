@@ -13,6 +13,9 @@ app.use(express.json({ limit: '80MB' }));
 app.use(cors());
 dotenv.config();
 
+// Rutas
+app.use(require('./routes/pacientes/pacientes'));
+
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
    console.log('Server on Port ', app.get('port'));

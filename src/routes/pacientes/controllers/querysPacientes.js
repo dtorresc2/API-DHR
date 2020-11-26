@@ -1,9 +1,9 @@
-const mysqlConnection = require('../../../config/awsbd');
+const mysqlConnection = require('../../../config/db');
 const bcrypt = require('bcrypt');
 // SELECT version();
 
 // Funcion de Prueba
-const obtenerVersionMYSQL = ({ email, user, password }) => {
+const obtenerVersionMYSQL = () => {
    return new Promise((resolve, reject) => {
        const query = 'SELECT version()';
        mysqlConnection.query(query, (err, rows, fields) => {
@@ -11,7 +11,7 @@ const obtenerVersionMYSQL = ({ email, user, password }) => {
                resolve(rows[0]);
            }
            else {
-               reject('Error al insertar usuario');
+               reject('Error');
            }
        });
    });
