@@ -39,7 +39,25 @@ const obtenerUsuarioEspecifico = ({ id }) => {
          'FROM usuarios ' +
          'WHERE id_usuario = ? ';
 
-      mysqlConnection.query(query, [id] ,(err, rows, fields) => {
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject('Error');
+         }
+      });
+   });
+}
+
+// Registrar usuarios
+const registrarUsuario = ({ CODIGO, NOMBRE, URL, FECHA, APP, WEB }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'INSERT INTO usuarios ' +
+         '(codigo,nombre,url,fecha,app,web) ' +
+         'VALUES (?,?,?,?,?,?)';
+
+      mysqlConnection.query(query, [CODIGO, NOMBRE, URL, FECHA, APP, WEB], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
@@ -52,5 +70,6 @@ const obtenerUsuarioEspecifico = ({ id }) => {
 
 module.exports = {
    obtenerListadoUsuarios: obtenerListadoUsuarios,
-   obtenerUsuarioEspecifico: obtenerUsuarioEspecifico
+   obtenerUsuarioEspecifico: obtenerUsuarioEspecifico,
+   registrarUsuario: registrarUsuario
 }
