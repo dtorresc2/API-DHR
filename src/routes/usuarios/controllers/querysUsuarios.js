@@ -44,7 +44,7 @@ const obtenerUsuarioEspecifico = ({ id }) => {
             resolve(rows[0]);
          }
          else {
-            reject('Error');
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: rows.message });
          }
       });
    });
@@ -60,13 +60,50 @@ const registrarUsuario = ({ CODIGO, NOMBRE, URL, FECHA, APP, WEB }) => {
       mysqlConnection.query(query, [CODIGO, NOMBRE, URL, FECHA, APP, WEB], (err, rows, fields) => {
          if (!err) {
             resolve(
-               {ID: rows.insertId , MENSAJE: "USUARIO REGISTRADO"}
+               { ID: rows.insertId, MENSAJE: "USUARIO REGISTRADO" }
             );
          }
          else {
             reject(
-               {ID: -1 , MENSAJE: "ERROR", ERROR : rows.message}
+               { ID: -1, MENSAJE: "ERROR", ERROR: rows.message }
             );
+         }
+      });
+   });
+}
+
+// Obtener codigo de usuario general
+const obtenerIdUsuario = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         'id_usuario AS ID_USUARIO ' +
+         'FROM usuarios ' +
+         'WHERE codigo = ? ';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: rows.message });
+         }
+      });
+   });
+}
+
+const actualizarUsuario = (id) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE usuarios SET ' +
+         'nombre = ?, ' + 
+         'url = ?, ' + 
+         'WHERE id_usuario = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'USUARIO ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: id, MENSAJE: "ERROR", ERROR: rows.message });
          }
       });
    });
@@ -75,5 +112,7 @@ const registrarUsuario = ({ CODIGO, NOMBRE, URL, FECHA, APP, WEB }) => {
 module.exports = {
    obtenerListadoUsuarios: obtenerListadoUsuarios,
    obtenerUsuarioEspecifico: obtenerUsuarioEspecifico,
-   registrarUsuario: registrarUsuario
+   registrarUsuario: registrarUsuario,
+   obtenerIdUsuario: obtenerIdUsuario,
+   actualizarUsuario: actualizarUsuario
 }
