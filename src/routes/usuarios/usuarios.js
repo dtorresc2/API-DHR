@@ -31,7 +31,6 @@ router.put('/usuarios/:id', async (req, res) => {
 });
 
 router.delete('/usuarios/:id', async (req, res) => {
-   // console.log(req.body);
    const resultado = await querysUsuarios.eliminarUsuario(req.params);
    res.json(resultado);
 });

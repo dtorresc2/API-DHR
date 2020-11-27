@@ -18,4 +18,25 @@ router.get('/pacientes/:id', async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/pacientes', async (req, res) => {
+   const resultado = await querysPacientes.comprobarPaciente(req.body);
+   if (resultado.CONTEO < 1) {
+      const resultadoRegistro = await querysPacientes.registrarPaciente(req.body);
+      res.json(resultadoRegistro);
+   }
+   else {
+      res.json({ ID: -2, MENSAJE: "PACIENTE DUPLICADO" })
+   }
+});
+
+router.put('/pacientes/:id', async (req, res) => {
+   const resultadoRegistro = await querysPacientes.actualizarPaciente(req.params, req.body);
+   res.json(resultadoRegistro);
+});
+
+router.delete('/pacientes/:id', async (req, res) => {
+   const resultado = await querysPacientes.eliminarPaciente(req.params);
+   res.json(resultado);
+});
+
 module.exports = router;
