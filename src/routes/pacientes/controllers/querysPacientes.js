@@ -74,8 +74,51 @@ const obtenerPacienteEspecifico = ({ id }) => {
     });
 }
 
+// Listado de Pacientes
+const comprobarPaciente = ({ NOMBRE, DPI }) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT COUNT(*) AS CONTEO ' +
+            'FROM pacientes ' +
+            'WHERE nombre = ? OR dpi = ?';
+
+        mysqlConnection.query(query, [NOMBRE, DPI], (err, rows, fields) => {
+            if (!err) {
+                resolve(rows[0]);
+            }
+            else {
+                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+            }
+        });
+    });
+}
+
+// Registrar paciente
+const registrarPaciente = ({ NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACIMIENTO, DPI, ID_USUARIO }) => {
+    return new Promise((resolve, reject) => {
+        const query = 'INSERT INTO pacientes ' +
+            '(nombre,edad,ocupacion,sexo,tel,fecha_nacimiento,' +
+            'dpi,debe,haber,saldo,id_usuario) ' +
+            'VALUES (?,?,?,?,?,?,?,0,0,0,?)';
+
+        mysqlConnection.query(query, [NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACIMIENTO, DPI, ID_USUARIO], (err, rows, fields) => {
+            if (!err) {
+                resolve(
+                    { ID: rows.insertId, MENSAJE: "PACIENTE REGISTRADO" }
+                );
+            }
+            else {
+                reject(
+                    { ID: -1, MENSAJE: "ERROR", ERROR: err }
+                );
+            }
+        });
+    });
+}
+
 module.exports = {
     obtenerVersionMYSQL: obtenerVersionMYSQL,
     obtenerListadoPacientes: obtenerListadoPacientes,
-    obtenerPacienteEspecifico: obtenerPacienteEspecifico
+    obtenerPacienteEspecifico: obtenerPacienteEspecifico,
+    registrarPaciente: registrarPaciente,
+    comprobarPaciente: comprobarPaciente
 }

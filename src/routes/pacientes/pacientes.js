@@ -18,4 +18,15 @@ router.get('/pacientes/:id', async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/pacientes', async (req, res) => {
+   const resultado = await querysPacientes.comprobarPaciente(req.body);
+   if (resultado.CONTEO < 1) {
+      const resultadoRegistro = await querysPacientes.registrarPaciente(req.body);
+      res.json(resultadoRegistro);
+   }
+   else {
+      res.json({ ID: -2, MENSAJE: "PACIENTE DUPLICADO" })
+   }
+});
+
 module.exports = router;
