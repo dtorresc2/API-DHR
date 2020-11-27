@@ -18,10 +18,16 @@ router.get('/usuarios/:id/codigo', async (req, res) => {
    res.json(resultado);
 });
 
-
 router.post('/usuarios', async (req, res) => {
+   const currentTime = new Date().getTime();
+   req.body.CODIGO = currentTime;
    const resultadoRegistro = await querysUsuarios.registrarUsuario(req.body);
    res.json(resultadoRegistro);
+});
+
+router.put('/usuarios/:id', async (req, res) => {
+   const resultado = await querysUsuarios.actualizarUsuario(req.params, req.body);
+   res.json(resultado);
 });
 
 module.exports = router;

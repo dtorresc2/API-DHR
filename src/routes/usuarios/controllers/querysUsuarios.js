@@ -19,7 +19,7 @@ const obtenerListadoUsuarios = () => {
             resolve(rows);
          }
          else {
-            reject('Error');
+            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
@@ -44,7 +44,7 @@ const obtenerUsuarioEspecifico = ({ id }) => {
             resolve(rows[0]);
          }
          else {
-            reject({ ID: -1, MENSAJE: "ERROR", ERROR: rows.message });
+            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
@@ -65,7 +65,7 @@ const registrarUsuario = ({ CODIGO, NOMBRE, URL, FECHA, APP, WEB }) => {
          }
          else {
             reject(
-               { ID: -1, MENSAJE: "ERROR", ERROR: rows.message }
+               { ID: -1, MENSAJE: "ERROR", ERROR: err }
             );
          }
       });
@@ -85,25 +85,25 @@ const obtenerIdUsuario = ({ id }) => {
             resolve(rows[0]);
          }
          else {
-            reject({ ID: -1, MENSAJE: "ERROR", ERROR: rows.message });
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
 }
 
-const actualizarUsuario = (id) => {
+const actualizarUsuario = ({ id }, { NOMBRE, URL }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE usuarios SET ' +
-         'nombre = ?, ' + 
-         'url = ?, ' + 
+         'nombre = ?, ' +
+         'url = ? ' +
          'WHERE id_usuario = ?';
 
-      mysqlConnection.query(query, [id], (err, rows, fields) => {
+      mysqlConnection.query(query, [NOMBRE, URL, id], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'USUARIO ACTUALIZADO' });
          }
          else {
-            reject({ ID: id, MENSAJE: "ERROR", ERROR: rows.message });
+            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
