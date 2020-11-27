@@ -11,6 +11,11 @@ app.set('port', process.env.PORT || 3000);
 // Configuracion JSON
 app.use(express.json({ limit: '80MB' }));
 app.use(cors());
+dotenv.config();
+
+// Rutas
+app.use(require('./routes/pacientes/pacientes'));
+app.use(require('./routes/usuarios/usuarios'));
 
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
