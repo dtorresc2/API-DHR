@@ -109,10 +109,27 @@ const actualizarUsuario = ({ id }, { NOMBRE, URL }) => {
    });
 }
 
+const eliminarUsuario = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM usuarios ' +
+         'WHERE id_usuario = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'USUARIO ELIMINADO' });
+         }
+         else {
+            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    obtenerListadoUsuarios: obtenerListadoUsuarios,
    obtenerUsuarioEspecifico: obtenerUsuarioEspecifico,
    registrarUsuario: registrarUsuario,
    obtenerIdUsuario: obtenerIdUsuario,
-   actualizarUsuario: actualizarUsuario
+   actualizarUsuario: actualizarUsuario,
+   eliminarUsuario: eliminarUsuario
 }
