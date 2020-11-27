@@ -29,4 +29,14 @@ router.post('/pacientes', async (req, res) => {
    }
 });
 
+router.put('/pacientes/:id', async (req, res) => {
+   const resultadoRegistro = await querysPacientes.actualizarPaciente(req.params, req.body);
+   res.json(resultadoRegistro);
+});
+
+router.delete('/pacientes/:id', async (req, res) => {
+   const resultado = await querysPacientes.eliminarPaciente(req.params);
+   res.json(resultado);
+});
+
 module.exports = router;
