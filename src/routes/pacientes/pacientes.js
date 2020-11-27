@@ -8,4 +8,14 @@ router.get('/version', async (req, res) => {
    res.json(version);
 });
 
+router.get('/pacientes', async (req, res) => {
+   const resultado = await querysPacientes.obtenerListadoPacientes();
+   res.json(resultado);
+});
+
+router.get('/pacientes/:id', async (req, res) => {
+   const resultado = await querysPacientes.obtenerPacienteEspecifico(req.params);
+   res.json(resultado);
+});
+
 module.exports = router;

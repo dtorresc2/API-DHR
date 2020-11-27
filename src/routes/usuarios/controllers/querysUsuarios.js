@@ -1,5 +1,4 @@
 const mysqlConnection = require('../../../config/db');
-const bcrypt = require('bcrypt');
 
 // Listado de Usuarios
 const obtenerListadoUsuarios = () => {
@@ -19,7 +18,7 @@ const obtenerListadoUsuarios = () => {
             resolve(rows);
          }
          else {
-            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
@@ -44,7 +43,7 @@ const obtenerUsuarioEspecifico = ({ id }) => {
             resolve(rows[0]);
          }
          else {
-            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
@@ -91,6 +90,7 @@ const obtenerIdUsuario = ({ id }) => {
    });
 }
 
+// Actualizar usuarios
 const actualizarUsuario = ({ id }, { NOMBRE, URL }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE usuarios SET ' +
@@ -103,12 +103,13 @@ const actualizarUsuario = ({ id }, { NOMBRE, URL }) => {
             resolve({ ID: id, MENSAJE: 'USUARIO ACTUALIZADO' });
          }
          else {
-            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
 }
 
+// Eliminar usuarios
 const eliminarUsuario = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM usuarios ' +
@@ -119,7 +120,7 @@ const eliminarUsuario = ({ id }) => {
             resolve({ ID: id, MENSAJE: 'USUARIO ELIMINADO' });
          }
          else {
-            reject({ ID: id, MENSAJE: "ERROR", ERROR: err });
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
          }
       });
    });
