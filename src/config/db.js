@@ -1,10 +1,17 @@
 const mysql = require('mysql');
+const dotenv = require('dotenv');
+const { env } = require('process');
+// require('../../src/config/')
+
+// Configuracion archivo - variables de entorno
+const envFile = "./src/config/.env";
+dotenv.config({ path: envFile });
 
 const mysqlConnection = mysql.createConnection({
-    host: "dhrbd.cfluyrpcigfd.us-east-1.rds.amazonaws.com",
-    user: "admin_dhr",
-    password: "admin-dhr1234",
-    database: "db_dhr"
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    database: process.env.DB_NAME
 });
 
 mysqlConnection.connect(function (err){
