@@ -1,4 +1,5 @@
 const mysqlConnection = require('../../../config/db');
+const bcrypt = require('bcrypt');
 
 // Listado de Cuentas
 const obtenerListadoCuentas = () => {
@@ -75,7 +76,7 @@ const obtenerCuentaSesion = ({ ID_USUARIO, USUARIO }) => {
 
       mysqlConnection.query(query, [ID_USUARIO, USUARIO], (err, rows, fields) => {
          if (!err) {
-            resolve(rows);
+            resolve(rows[0]);
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -125,11 +126,30 @@ const registrarCuenta = ({ USUARIO, PASSWORD, ID_USUARIO }) => {
    });
 }
 
+const desencriptarPassowrd = (password, hash) => {
+   return new Promise((resolve, reject) => {
+      bcrypt.compare(password, hash, function (err, result) {
+         if (!err) {
+            if (result) {
+               resolve({ MENSAJE: "USUARIO AUTENTICADO", ESTADO: 1 });
+            }
+            else {
+               resolve({ MENSAJE: "PASSWORD INCORRECTO", ESTADO: 0 });
+            }
+         }
+         else {
+            reject({ MENSAJE: "ERROR AL COMPARAR PASSWORD", ESTADO: -1, });
+         }
+      });
+   });
+}
+
 module.exports = {
    obtenerListadoCuentas: obtenerListadoCuentas,
    obtenerListadoCuentasPorUsuario: obtenerListadoCuentasPorUsuario,
    obtenerCuentaEspecifica: obtenerCuentaEspecifica,
    obtenerCuentaSesion: obtenerCuentaSesion,
    registrarCuenta: registrarCuenta,
-   obtenerConteoCuentaSesion : obtenerConteoCuentaSesion
+   obtenerConteoCuentaSesion: obtenerConteoCuentaSesion,
+   desencriptarPassowrd: desencriptarPassowrd
 }

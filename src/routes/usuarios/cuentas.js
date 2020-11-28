@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 
 const querysCuentas = require('../usuarios/controllers/querysCuentas');
+const querysUsuarios = require('../usuarios/controllers/querysUsuarios');
 
 router.get('/cuentas', async (req, res) => {
    const listadoCuentas = await querysCuentas.obtenerListadoCuentas();
@@ -31,6 +32,25 @@ router.post('/cuentas', async (req, res) => {
    }
    else {
       res.json({ ID: -1, MENSAJE: "USUARIO EXISTENTE" })
+   }
+});
+
+router.post('/cuentas/login', async (req, res) => {
+   const { PASSWORD } = req.body;
+   const resultado = await querysCuentas.obtenerConteoCuentaSesion(req.body);
+
+   if (resultado.CONTEO > 0) {
+      const resultadoExistencia = await querysCuentas.obtenerCuentaSesion(req.body);
+      const resultadoDesencriptar = await querysCuentas.desencriptarPassowrd(PASSWORD, resultadoExistencia.PASSWORD);
+
+      res.json({
+         ID: resultadoExistencia.ID_CUENTA,
+         MENSAJE: resultadoDesencriptar.MENSAJE,
+         ESTADO: resultadoDesencriptar.ESTADO
+      });
+   }
+   else {
+      res.json({ ID: -1, MENSAJE: "USUARIO NO ENCONTRADO", ESTADO: -1 });
    }
 });
 
