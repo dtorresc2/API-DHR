@@ -16,6 +16,8 @@ dotenv.config();
 // Rutas
 app.use(require('./routes/pacientes/pacientes'));
 app.use(require('./routes/usuarios/usuarios'));
+app.use(require('./routes/usuarios/cuentas'));
+
 
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
