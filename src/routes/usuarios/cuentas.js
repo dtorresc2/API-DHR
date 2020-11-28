@@ -54,4 +54,17 @@ router.post('/cuentas/login', async (req, res) => {
    }
 });
 
+router.put('/cuentas/:id/pass', async (req, res) => {
+   const { PASSWORD } = req.body;
+   req.body.PASSWORD = bcrypt.hashSync(PASSWORD, 10);
+
+   const resultadoActualizacion = await querysCuentas.actualizarPassword(req.body, req.params);
+   res.json(resultadoActualizacion);
+});
+
+router.delete('/cuentas/:id', async (req, res) => {
+   const resultado = await querysCuentas.eliminarCuenta(req.params);
+   res.json(resultado);
+});
+
 module.exports = router;

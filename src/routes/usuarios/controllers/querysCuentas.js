@@ -1,5 +1,6 @@
 const mysqlConnection = require('../../../config/db');
 const bcrypt = require('bcrypt');
+const { eliminarUsuario } = require('./querysUsuarios');
 
 // Listado de Cuentas
 const obtenerListadoCuentas = () => {
@@ -30,7 +31,7 @@ const obtenerListadoCuentasPorUsuario = ({ id }) => {
          'password AS PASSWORD, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM cuentas ' +
-         'WHERE id_usuario = ?' +
+         'WHERE id_usuario = ?';
 
          mysqlConnection.query(query, [id], (err, rows, fields) => {
             if (!err) {
@@ -144,6 +145,36 @@ const desencriptarPassowrd = (password, hash) => {
    });
 }
 
+const actualizarPassword = ({ PASSWORD }, { id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE cuentas SET password = ? WHERE id_cuenta = ?';
+      mysqlConnection.query(query, [PASSWORD, id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: "PASSWORD ACTUALIZADO" });
+         }
+         else {
+            reject({ ID: id, MENSAJE: "ERROR" });
+         }
+      });
+   });
+}
+
+// Eliminar usuarios
+const eliminarCuenta = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM cuentas ' +
+         'WHERE id_cuenta = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'CUENTA ELIMINADA' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
 module.exports = {
    obtenerListadoCuentas: obtenerListadoCuentas,
    obtenerListadoCuentasPorUsuario: obtenerListadoCuentasPorUsuario,
@@ -151,5 +182,7 @@ module.exports = {
    obtenerCuentaSesion: obtenerCuentaSesion,
    registrarCuenta: registrarCuenta,
    obtenerConteoCuentaSesion: obtenerConteoCuentaSesion,
-   desencriptarPassowrd: desencriptarPassowrd
+   desencriptarPassowrd: desencriptarPassowrd,
+   actualizarPassword: actualizarPassword,
+   eliminarCuenta: eliminarUsuario
 }
