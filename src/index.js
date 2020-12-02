@@ -20,6 +20,7 @@ app.use(require('./routes/usuarios/cuentas'));
 app.use(require('./routes/bitacora/bitacoras'))
 app.use(require('./routes/fichas/fichas'));
 app.use(require('./routes/fichas/pagos'));
+app.use(require('./routes/piezas/piezas'));
 
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
