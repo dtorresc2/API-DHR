@@ -1,8 +1,7 @@
 const mysqlConnection = require('../../../config/db');
-const { obtenerConteoCuentaSesion } = require('../../usuarios/controllers/querysCuentas');
 
 // Registrar ficha
-const registrarPaciente = ({ CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ID_PACIENTE, ID_USUARIO }) => {
+const registrarFicha = ({ CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ID_PACIENTE, ID_USUARIO }) => {
    return new Promise((resolve, reject) => {
       const query = 'INSERT INTO fichas ' +
          '(codigo_interno,fecha,medico,motivo,referente,id_paciente,id_usuario) ' +
@@ -135,12 +134,30 @@ const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFER
    });
 }
 
+// Eliminar usuarios
+const eliminarFicha = ({ id }) => {
+   return new Promise((resolve, reject) => {
+       const query = 'DELETE FROM fichas ' +
+           'WHERE id_ficha = ?';
+
+       mysqlConnection.query(query, [id], (err, rows, fields) => {
+           if (!err) {
+               resolve({ ID: id, MENSAJE: 'FICHA ELIMINADA' });
+           }
+           else {
+               reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+           }
+       });
+   });
+}
+
 
 module.exports = {
-   registrarPaciente: registrarPaciente,
+   registrarFicha: registrarFicha,
    obtenerListadoFichas: obtenerListadoFichas,
    obtenerListadoFichasEspecifico: obtenerListadoFichasEspecifico,
    obtenerConteoFichas: obtenerConteoFichas,
    obtenerListadoFichasXUsuario : obtenerListadoFichasXUsuario,
-   actualizarFichas: actualizarFichas
+   actualizarFichas: actualizarFichas,
+   eliminarFicha: eliminarFicha
 }

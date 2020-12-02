@@ -6,7 +6,7 @@ const querysFichas = require('../fichas/controllers/querysFichas');
 router.post('/fichas', async (req, res) => {
    const conteo = await querysFichas.obtenerConteoFichas(req.body.ID_USUARIO);
    req.body.CODIGO_INTERNO = conteo.CONTEO;
-   const resultado = await querysFichas.registrarPaciente(req.body);
+   const resultado = await querysFichas.registrarFicha(req.body);
    res.json(resultado);
 });
 
@@ -30,5 +30,9 @@ router.put('/fichas/:id', async (req, res) => {
    res.json(resultadoRegistro);
 });
 
+router.delete('/fichas/:id', async (req, res) => {
+   const resultado = await querysFichas.eliminarFicha(req.params);
+   res.json(resultado);
+});
 
 module.exports = router;
