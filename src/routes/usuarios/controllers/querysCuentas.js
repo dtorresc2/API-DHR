@@ -175,6 +175,7 @@ const eliminarCuenta = ({ id }) => {
       });
    });
 }
+
 module.exports = {
    obtenerListadoCuentas: obtenerListadoCuentas,
    obtenerListadoCuentasPorUsuario: obtenerListadoCuentasPorUsuario,
@@ -184,5 +185,5 @@ module.exports = {
    obtenerConteoCuentaSesion: obtenerConteoCuentaSesion,
    desencriptarPassowrd: desencriptarPassowrd,
    actualizarPassword: actualizarPassword,
-   eliminarCuenta: eliminarUsuario
+   eliminarCuenta: eliminarCuenta
 }
