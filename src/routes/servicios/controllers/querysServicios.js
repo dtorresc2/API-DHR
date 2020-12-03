@@ -22,6 +22,50 @@ const registrarServicio = ({ DESCRIPCION, MONTO, ESTADO, ID_USUARIO }) => {
    });
 }
 
+const obtenerListadoServicios = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         "id_servicio AS ID_SERVICIO, " +
+         "descripcion AS DESCRIPCION, " +
+         'monto AS MONTO, ' +
+         'estado AS ESTADO, ' +
+         'id_usuario AS ID_USUARIO ' +
+         'FROM servicios WHERE id_usuario = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const obtenerServicioEspecifico = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         "id_servicio AS ID_SERVICIO, " +
+         "descripcion AS DESCRIPCION, " +
+         'monto AS MONTO, ' +
+         'estado AS ESTADO, ' +
+         'id_usuario AS ID_USUARIO ' +
+         'FROM servicios WHERE id_servicio = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
-   registrarServicio: registrarServicio
+   registrarServicio: registrarServicio,
+   obtenerListadoServicios : obtenerListadoServicios,
+   obtenerServicioEspecifico : obtenerServicioEspecifico
 }

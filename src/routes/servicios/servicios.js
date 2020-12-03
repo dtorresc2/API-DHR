@@ -8,4 +8,14 @@ router.post('/servicios', async (req, res) => {
    res.json(resultado);
 });
 
+router.get('/servicios/:id/usuario', async (req, res) => {
+   const resultado = await querysServicios.obtenerListadoServicios(req.params);
+   res.json(resultado);
+});
+
+router.get('/servicios/:id', async (req, res) => {
+   const resultado = await querysServicios.obtenerListadoServicios(req.params);
+   res.json(resultado);
+});
+
 module.exports = router;
