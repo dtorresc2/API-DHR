@@ -31,6 +31,7 @@ const obtenerListadoFichas = () => {
          'medico AS MEDICO, ' +
          'motivo AS MOTIVO, ' +
          'referente AS REFERENTE, ' +
+         'estado AS ESTADO, ' +
          'id_paciente AS ID_PACIENTE, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM fichas';
@@ -55,6 +56,7 @@ const obtenerListadoFichasEspecifico = ({ id }) => {
          'medico AS MEDICO, ' +
          'motivo AS MOTIVO, ' +
          'referente AS REFERENTE, ' +
+         'estado AS ESTADO, ' +
          'id_paciente AS ID_PACIENTE, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM fichas WHERE id_ficha = ?';
@@ -79,6 +81,7 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
          'medico AS MEDICO, ' +
          'motivo AS MOTIVO, ' +
          'referente AS REFERENTE, ' +
+         'estado AS ESTADO, ' +
          'id_paciente AS ID_PACIENTE, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM fichas WHERE id_usuario = ?';
@@ -120,12 +123,30 @@ const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFER
          'fecha = ?,' +
          'medico = ?,' +
          'motivo = ?,' +
-         'referente = ? ' +
+         'referente = ?, ' +
+         'estado = ? ' +
          'WHERE id_ficha = ?';
 
       mysqlConnection.query(query, [CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, id], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'FICHA ACTUALIZADA' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const actualizarEstadoFicha = ({ id }, { ESTADO }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE fichas SET ' +
+         'estado = ? ' +
+         'WHERE id_ficha = ?';
+
+      mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'SERVICIO ACTUALIZADO' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -159,5 +180,6 @@ module.exports = {
    obtenerConteoFichas: obtenerConteoFichas,
    obtenerListadoFichasXUsuario: obtenerListadoFichasXUsuario,
    actualizarFichas: actualizarFichas,
+   actualizarEstadoFicha : actualizarEstadoFicha,
    eliminarFicha: eliminarFicha
 }

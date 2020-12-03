@@ -30,6 +30,11 @@ router.put('/fichas/:id', async (req, res) => {
    res.json(resultadoRegistro);
 });
 
+router.put('/fichas/:id/estado', async (req, res) => {
+   const resultadoRegistro = await querysFichas.actualizarEstadoFicha(req.params, req.body);
+   res.json(resultadoRegistro);
+});
+
 router.delete('/fichas/:id', async (req, res) => {
    const resultado = await querysFichas.eliminarFicha(req.params);
    res.json(resultado);
