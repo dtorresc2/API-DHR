@@ -1,4 +1,5 @@
 const mysqlConnection = require('../../../config/db');
+const { actualizarEstadoFicha } = require('../../fichas/controllers/querysFichas');
 
 // Funcion de Prueba
 const obtenerVersionMYSQL = () => {
@@ -29,7 +30,8 @@ const obtenerListadoPacientes = () => {
             'dpi AS DPI, ' +
             'debe AS DEBE, ' +
             'haber AS HABER, ' +
-            'saldo AS SALDO ' +
+            'saldo AS SALDO, ' +
+            'estado AS ESTADO ' +
             'FROM pacientes';
 
         mysqlConnection.query(query, (err, rows, fields) => {
@@ -57,7 +59,8 @@ const obtenerPacienteEspecifico = ({ id }) => {
             'dpi AS DPI, ' +
             'debe AS DEBE, ' +
             'haber AS HABER, ' +
-            'saldo AS SALDO ' +
+            'saldo AS SALDO, ' +
+            'estado AS ESTADO ' +
             'FROM pacientes ' +
             'WHERE id_paciente = ? ';
 
@@ -86,7 +89,8 @@ const obtenerListadoPacientesPorUsuario = ({ id }) => {
             'dpi AS DPI, ' +
             'debe AS DEBE, ' +
             'haber AS HABER, ' +
-            'saldo AS SALDO ' +
+            'saldo AS SALDO, ' +
+            'estado AS ESTADO ' +
             'FROM pacientes ' +
             'WHERE id_usuario = ? ';
 
@@ -143,7 +147,7 @@ const registrarPaciente = ({ NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACI
 }
 
 // Actualizar usuarios
-const actualizarPaciente = ({ id }, { NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACIMIENTO, DPI }) => {
+const actualizarPaciente = ({ id }, { NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACIMIENTO, DPI, ESTADO }) => {
     return new Promise((resolve, reject) => {
         const query = 'UPDATE pacientes SET ' +
             'nombre = ?,' +
@@ -152,10 +156,11 @@ const actualizarPaciente = ({ id }, { NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, F
             'sexo = ?,' +
             'tel = ?,' +
             'fecha_nacimiento = ?,' +
-            'dpi = ? ' +
+            'dpi = ?, ' +
+            'estado = ? ' +
             'WHERE id_paciente = ?';
 
-        mysqlConnection.query(query, [NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACIMIENTO, DPI, id], (err, rows, fields) => {
+        mysqlConnection.query(query, [NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, FECHA_NACIMIENTO, DPI, ESTADO, id], (err, rows, fields) => {
             if (!err) {
                 resolve({ ID: id, MENSAJE: 'PACIENTE ACTUALIZADO' });
             }
@@ -165,6 +170,23 @@ const actualizarPaciente = ({ id }, { NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, F
         });
     });
 }
+
+const actualizarEstadoPaciente = ({ id }, { ESTADO }) => {
+    return new Promise((resolve, reject) => {
+       const query = 'UPDATE pacientes SET ' +
+          'estado = ? ' +
+          'WHERE id_paciente = ?';
+ 
+       mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
+          if (!err) {
+             resolve({ ID: id, MENSAJE: 'PACIENTE ACTUALIZADO' });
+          }
+          else {
+             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+          }
+       });
+    });
+ }
 
 // Eliminar usuarios
 const eliminarPaciente = ({ id }) => {
@@ -187,9 +209,10 @@ module.exports = {
     obtenerVersionMYSQL: obtenerVersionMYSQL,
     obtenerListadoPacientes: obtenerListadoPacientes,
     obtenerPacienteEspecifico: obtenerPacienteEspecifico,
-    obtenerListadoPacientesPorUsuario : obtenerListadoPacientesPorUsuario,
+    obtenerListadoPacientesPorUsuario: obtenerListadoPacientesPorUsuario,
     registrarPaciente: registrarPaciente,
     comprobarPaciente: comprobarPaciente,
     actualizarPaciente: actualizarPaciente,
+    actualizarEstadoPaciente: actualizarEstadoPaciente,
     eliminarPaciente: eliminarPaciente
 }

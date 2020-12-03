@@ -116,7 +116,7 @@ const obtenerConteoFichas = (id) => {
 }
 
 // Actualizar usuarios
-const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE }) => {
+const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE fichas SET ' +
          'codigo_interno = ?,' +
@@ -127,7 +127,7 @@ const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFER
          'estado = ? ' +
          'WHERE id_ficha = ?';
 
-      mysqlConnection.query(query, [CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, id], (err, rows, fields) => {
+      mysqlConnection.query(query, [CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO, id], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'FICHA ACTUALIZADA' });
          }
