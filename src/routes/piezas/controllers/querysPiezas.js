@@ -43,6 +43,26 @@ const obtenerListadoPiezas = ({ id }) => {
    });
 }
 
+const obtenerPiezaEspecifica = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         "id_pieza AS ID_PIEZA, " +
+         "numero AS NUMERO, " +
+         'nombre AS NOMBRE, ' +
+         'id_usuario AS ID_USUARIO ' +
+         'FROM piezas WHERE id_pieza = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 // Actualizar piezas
 const actualizarPiezas = ({ id }, { NUMERO, NOMBRE }) => {
    return new Promise((resolve, reject) => {
@@ -82,6 +102,7 @@ const eliminarPieza = ({ id }) => {
 module.exports = {
    registrarPieza: registrarPieza,
    obtenerListadoPiezas: obtenerListadoPiezas,
+   obtenerPiezaEspecifica : obtenerPiezaEspecifica,
    actualizarPiezas: actualizarPiezas,
    eliminarPieza : eliminarPieza
 }

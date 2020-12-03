@@ -92,7 +92,7 @@ const obtenerListadoPacientesPorUsuario = ({ id }) => {
 
         mysqlConnection.query(query, [id], (err, rows, fields) => {
             if (!err) {
-                resolve(rows[0]);
+                resolve(rows);
             }
             else {
                 reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });

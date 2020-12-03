@@ -61,7 +61,7 @@ const obtenerListadoFichasEspecifico = ({ id }) => {
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
-            resolve(rows);
+            resolve(rows[0]);
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });

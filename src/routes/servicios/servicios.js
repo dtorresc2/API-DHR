@@ -14,7 +14,7 @@ router.get('/servicios/:id/usuario', async (req, res) => {
 });
 
 router.get('/servicios/:id', async (req, res) => {
-   const resultado = await querysServicios.obtenerListadoServicios(req.params);
+   const resultado = await querysServicios.obtenerServicioEspecifico(req.params);
    res.json(resultado);
 });
 
