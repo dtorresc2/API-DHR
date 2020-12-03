@@ -1,16 +1,16 @@
 const mysqlConnection = require('../../../config/db');
 
 // Registrar piezas
-const registrarPieza = ({ NUMERO, NOMBRE, ID_USUARIO }) => {
+const registrarServicio = ({ DESCRIPCION, MONTO, ESTADO, ID_USUARIO }) => {
    return new Promise((resolve, reject) => {
-      const query = 'INSERT INTO piezas ' +
-         '(numero,nombre,id_usuario) ' +
-         'VALUES (?,?,?)';
+      const query = 'INSERT INTO servicios ' +
+         '(descripcion,monto,estado,id_usuario) ' +
+         'VALUES (?,?,?,?)';
 
-      mysqlConnection.query(query, [NUMERO, NOMBRE, ID_USUARIO], (err, rows, fields) => {
+      mysqlConnection.query(query, [DESCRIPCION, MONTO, ESTADO, ID_USUARIO], (err, rows, fields) => {
          if (!err) {
             resolve(
-               { ID: rows.insertId, MENSAJE: "PIEZA REGISTRADA" }
+               { ID: rows.insertId, MENSAJE: "SERVICIO REGISTRADO" }
             );
          }
          else {
@@ -22,16 +22,15 @@ const registrarPieza = ({ NUMERO, NOMBRE, ID_USUARIO }) => {
    });
 }
 
-// Listado de Piezas
-const obtenerListadoPiezas = ({ id }) => {
+const obtenerListadoServicios = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
-         "id_pieza AS ID_PIEZA, " +
-         "numero AS NUMERO, " +
-         'nombre AS NOMBRE, ' +
+         "id_servicio AS ID_SERVICIO, " +
+         "descripcion AS DESCRIPCION, " +
+         'monto AS MONTO, ' +
          'estado AS ESTADO, ' +
          'id_usuario AS ID_USUARIO ' +
-         'FROM piezas WHERE id_usuario = ?';
+         'FROM servicios WHERE id_usuario = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
@@ -44,15 +43,15 @@ const obtenerListadoPiezas = ({ id }) => {
    });
 }
 
-const obtenerPiezaEspecifica = ({ id }) => {
+const obtenerServicioEspecifico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
-         "id_pieza AS ID_PIEZA, " +
-         "numero AS NUMERO, " +
-         'nombre AS NOMBRE, ' +
+         "id_servicio AS ID_SERVICIO, " +
+         "descripcion AS DESCRIPCION, " +
+         'monto AS MONTO, ' +
          'estado AS ESTADO, ' +
          'id_usuario AS ID_USUARIO ' +
-         'FROM piezas WHERE id_pieza = ?';
+         'FROM servicios WHERE id_servicio = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
@@ -65,18 +64,17 @@ const obtenerPiezaEspecifica = ({ id }) => {
    });
 }
 
-// Actualizar piezas
-const actualizarPiezas = ({ id }, { NUMERO, NOMBRE, ESTADO }) => {
+const actualizarServicio = ({ id }, { DESCRIPCION, MONTO, ESTADO }) => {
    return new Promise((resolve, reject) => {
-      const query = 'UPDATE piezas SET ' +
-         'numero = ?,' +
-         'nombre = ?, ' +
+      const query = 'UPDATE servicios SET ' +
+         'descripcion = ?,' +
+         'monto = ?, ' +
          'estado = ? ' +
-         'WHERE id_pieza = ?';
+         'WHERE id_servicio = ?';
 
-      mysqlConnection.query(query, [NUMERO, NOMBRE, ESTADO, id], (err, rows, fields) => {
+      mysqlConnection.query(query, [DESCRIPCION, MONTO, ESTADO, id], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'PIEZA ACTUALIZADA' });
+            resolve({ ID: id, MENSAJE: 'SERVICIO ACTUALIZADO' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -85,15 +83,15 @@ const actualizarPiezas = ({ id }, { NUMERO, NOMBRE, ESTADO }) => {
    });
 }
 
-const actualizarEstadoPieza = ({ id }, { ESTADO }) => {
+const actualizarEstadoServicio = ({ id }, { ESTADO }) => {
    return new Promise((resolve, reject) => {
-      const query = 'UPDATE piezas SET ' +
+      const query = 'UPDATE servicios SET ' +
          'estado = ? ' +
-         'WHERE id_pieza = ?';
+         'WHERE id_servicio = ?';
 
       mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'PIEZA ACTUALIZADA' });
+            resolve({ ID: id, MENSAJE: 'SERVICIO ACTUALIZADO' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -102,15 +100,14 @@ const actualizarEstadoPieza = ({ id }, { ESTADO }) => {
    });
 }
 
-// Eliminar piezas
-const eliminarPieza = ({ id }) => {
+const eliminarServicio = ({ id }) => {
    return new Promise((resolve, reject) => {
-      const query = 'DELETE FROM piezas ' +
-         'WHERE id_pieza = ?';
+      const query = 'DELETE FROM servicios ' +
+         'WHERE id_servicio = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'PIEZA ELIMINADA' });
+            resolve({ ID: id, MENSAJE: 'SERVICIO ELIMINADO' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -120,10 +117,10 @@ const eliminarPieza = ({ id }) => {
 }
 
 module.exports = {
-   registrarPieza: registrarPieza,
-   obtenerListadoPiezas: obtenerListadoPiezas,
-   obtenerPiezaEspecifica : obtenerPiezaEspecifica,
-   actualizarPiezas: actualizarPiezas,
-   actualizarEstadoPieza : actualizarEstadoPieza,
-   eliminarPieza : eliminarPieza
+   registrarServicio: registrarServicio,
+   obtenerListadoServicios : obtenerListadoServicios,
+   obtenerServicioEspecifico : obtenerServicioEspecifico,
+   actualizarServicio : actualizarServicio,
+   actualizarEstadoServicio : actualizarEstadoServicio,
+   eliminarServicio : eliminarServicio
 }

@@ -18,6 +18,11 @@ router.get('/pacientes/:id', async (req, res) => {
    res.json(resultado);
 });
 
+router.get('/pacientes/:id/usuario', async (req, res) => {
+   const resultado = await querysPacientes.obtenerListadoPacientesPorUsuario(req.params);
+   res.json(resultado);
+});
+
 router.post('/pacientes', async (req, res) => {
    const resultado = await querysPacientes.comprobarPaciente(req.body);
    if (resultado.CONTEO < 1) {
@@ -31,6 +36,11 @@ router.post('/pacientes', async (req, res) => {
 
 router.put('/pacientes/:id', async (req, res) => {
    const resultadoRegistro = await querysPacientes.actualizarPaciente(req.params, req.body);
+   res.json(resultadoRegistro);
+});
+
+router.put('/pacientes/:id/estado', async (req, res) => {
+   const resultadoRegistro = await querysPacientes.actualizarEstadoPaciente(req.params, req.body);
    res.json(resultadoRegistro);
 });
 
