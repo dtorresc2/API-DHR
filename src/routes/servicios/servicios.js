@@ -18,4 +18,19 @@ router.get('/servicios/:id', async (req, res) => {
    res.json(resultado);
 });
 
+router.put('/servicios/:id', async (req, res) => {
+   const resultadoRegistro = await querysServicios.actualizarServicio(req.params, req.body);
+   res.json(resultadoRegistro);
+});
+
+router.put('/servicios/:id/estado', async (req, res) => {
+   const resultadoRegistro = await querysServicios.actualizarEstadoServicio(req.params, req.body);
+   res.json(resultadoRegistro);
+});
+
+router.delete('/servicios/:id', async (req, res) => {
+   const resultado = await querysServicios.eliminarServicio(req.params);
+   res.json(resultado);
+});
+
 module.exports = router;

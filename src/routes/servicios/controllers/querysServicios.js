@@ -64,8 +64,63 @@ const obtenerServicioEspecifico = ({ id }) => {
    });
 }
 
+const actualizarServicio = ({ id }, { DESCRIPCION, MONTO, ESTADO }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE servicios SET ' +
+         'descripcion = ?,' +
+         'monto = ?, ' +
+         'estado = ? ' +
+         'WHERE id_servicio = ?';
+
+      mysqlConnection.query(query, [DESCRIPCION, MONTO, ESTADO, id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'SERVICIO ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const actualizarEstadoServicio = ({ id }, { ESTADO }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE servicios SET ' +
+         'estado = ? ' +
+         'WHERE id_servicio = ?';
+
+      mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'SERVICIO ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const eliminarServicio = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM servicios ' +
+         'WHERE id_servicio = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'SERVICIO ELIMINADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarServicio: registrarServicio,
    obtenerListadoServicios : obtenerListadoServicios,
-   obtenerServicioEspecifico : obtenerServicioEspecifico
+   obtenerServicioEspecifico : obtenerServicioEspecifico,
+   actualizarServicio : actualizarServicio,
+   actualizarEstadoServicio : actualizarEstadoServicio,
+   eliminarServicio : eliminarServicio
 }
