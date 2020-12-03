@@ -29,6 +29,7 @@ const obtenerListadoPiezas = ({ id }) => {
          "id_pieza AS ID_PIEZA, " +
          "numero AS NUMERO, " +
          'nombre AS NOMBRE, ' +
+         'estado AS ESTADO, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM piezas WHERE id_usuario = ?';
 
@@ -49,6 +50,7 @@ const obtenerPiezaEspecifica = ({ id }) => {
          "id_pieza AS ID_PIEZA, " +
          "numero AS NUMERO, " +
          'nombre AS NOMBRE, ' +
+         'estado AS ESTADO, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM piezas WHERE id_pieza = ?';
 
@@ -64,14 +66,32 @@ const obtenerPiezaEspecifica = ({ id }) => {
 }
 
 // Actualizar piezas
-const actualizarPiezas = ({ id }, { NUMERO, NOMBRE }) => {
+const actualizarPiezas = ({ id }, { NUMERO, NOMBRE, ESTADO }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE piezas SET ' +
          'numero = ?,' +
-         'nombre = ? ' +
+         'nombre = ?, ' +
+         'estado = ? ' +
          'WHERE id_pieza = ?';
 
-      mysqlConnection.query(query, [NUMERO, NOMBRE, id], (err, rows, fields) => {
+      mysqlConnection.query(query, [NUMERO, NOMBRE, ESTADO, id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'PIEZA ACTUALIZADA' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const actualizarEstadoPieza = ({ id }, { ESTADO }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE piezas SET ' +
+         'estado = ? ' +
+         'WHERE id_pieza = ?';
+
+      mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'PIEZA ACTUALIZADA' });
          }
@@ -104,5 +124,6 @@ module.exports = {
    obtenerListadoPiezas: obtenerListadoPiezas,
    obtenerPiezaEspecifica : obtenerPiezaEspecifica,
    actualizarPiezas: actualizarPiezas,
+   actualizarEstadoPieza : actualizarEstadoPieza,
    eliminarPieza : eliminarPieza
 }
