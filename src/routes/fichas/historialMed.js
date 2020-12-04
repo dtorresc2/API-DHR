@@ -8,4 +8,10 @@ router.post('/historial-medico', async (req, res) => {
    res.json(resultado);
 });
 
+router.get('/historial-medico/:id', async (req, res) => {
+   const resultado = await querysHistorialMed.obtenerHistorialMedico(req.params);
+   res.json(resultado);
+});
+
+
 module.exports = router;
