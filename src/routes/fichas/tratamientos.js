@@ -21,7 +21,7 @@ router.post('/tratamientos', async (req, res) => {
 });
 
 router.get('/tratamientos/:id', async (req, res) => {
-   const resultado = await querysTratamientos.obtenerHistorialMedico(req.params);
+   const resultado = await querysTratamientos.obtenerTratamientos(req.params);
    res.json(resultado);
 });
 
@@ -31,7 +31,7 @@ router.put('/tratamientos/:id', async (req, res) => {
 });
 
 router.delete('/tratamientos/:id', async (req, res) => {
-   const resultado = await querysTratamientos.eliminarHistorialMedico(req.params);
+   const resultado = await querysTratamientos.eliminarTratamientos(req.params);
    res.json(resultado);
 });
 
