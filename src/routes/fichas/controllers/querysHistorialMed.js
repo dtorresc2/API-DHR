@@ -11,7 +11,7 @@ const registrarHistorialMedico = ({
          '(hospitalizado,descripcion_hos,tratamiento_medico,' +
          'alergia,descripcion_alergia,hemorragia,medicamento,' +
          'descripcion_medicamento,id_ficha) ' +
-         'VALUES (?,?,?,?,?,?,?)';
+         'VALUES (?,?,?,?,?,?,?,?,?)';
 
       mysqlConnection.query(query, [
          HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
@@ -91,7 +91,7 @@ const actualizarHistorialMedico = ({ id }, {
    });
 }
 
-// Eliminar historial
+// Eliminar historial medico
 const eliminarHistorialMedico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM historial_medico ' +

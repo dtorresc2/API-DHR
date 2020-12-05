@@ -4,7 +4,7 @@ const router = express.Router();
 const querysHistorialMed = require('./controllers/querysHistorialMed');
 
 router.post('/historial-medico', async (req, res) => {
-   const resultado = await querysHistorialMed.registrarHistorialMed(req.body);
+   const resultado = await querysHistorialMed.registrarHistorialMedico(req.body);
    res.json(resultado);
 });
 
