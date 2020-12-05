@@ -79,8 +79,25 @@ const actualizarHistorialOdontogologico = ({ id }, {
    });
 }
 
+const eliminarHistorialOdontodologico = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM historial_odonto ' +
+         'WHERE id_historial_odonto = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'HISTORIAL ELIMINADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarHistorialOdontodologico: registrarHistorialOdontodologico,
    obtenerHistorialOdontodologico: obtenerHistorialOdontodologico,
-   actualizarHistorialOdontogologico: actualizarHistorialOdontogologico
+   actualizarHistorialOdontogologico: actualizarHistorialOdontogologico,
+   eliminarHistorialOdontodologico: eliminarHistorialOdontodologico
 }
