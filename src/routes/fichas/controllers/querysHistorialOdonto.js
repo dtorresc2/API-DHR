@@ -51,7 +51,36 @@ const obtenerHistorialOdontodologico = ({ id }) => {
    });
 }
 
+const actualizarHistorialOdontogologico = ({ id }, {
+   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
+   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
+   DESCRIPCION_MEDICAMENTO
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE historial_odonto SET ' +
+         'dolor = ?,' +
+         'descripcion_dolor = ?,' +
+         'gingivitis = ?,' +
+         'otros = ? ' +
+         'WHERE id_historial_odonto = ?';
+
+      mysqlConnection.query(query, [
+         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
+         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
+         DESCRIPCION_MEDICAMENTO, id
+      ], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'HISTORIAL ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarHistorialOdontodologico: registrarHistorialOdontodologico,
-   obtenerHistorialOdontodologico : obtenerHistorialOdontodologico
+   obtenerHistorialOdontodologico: obtenerHistorialOdontodologico,
+   actualizarHistorialOdontogologico: actualizarHistorialOdontogologico
 }
