@@ -26,8 +26,24 @@ router.get('/tratamientos/:id', async (req, res) => {
 });
 
 router.put('/tratamientos/:id', async (req, res) => {
-   const resultado = await querysTratamientos.actualizarHistorialMedico(req.params, req.body);
-   res.json(resultado);
+   // const resultado = await querysTratamientos.actualizarHistorialMedico(req.params, req.body);
+   let contador = 0;
+   const resultado = await querysTratamientos.eliminarTratamientos(req.params);
+   
+   if (resultado.ID != -1) {
+      if (req.body.TRATAMIENTOS.length > 0) {
+         let arreglo = req.body.TRATAMIENTOS;
+         arreglo.forEach(async (element, index) => {
+            const resultadoRegistro = await querysTratamientos.registrarTratamiento(element, index + 1);
+            if (resultadoRegistro.ID != -1)
+               contador++;
+         });
+      }
+   }
+   // res.json(resultado);
+   setTimeout(() => {
+      res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
+   }, 1000);
 });
 
 router.delete('/tratamientos/:id', async (req, res) => {
