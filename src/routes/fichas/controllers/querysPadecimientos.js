@@ -35,17 +35,19 @@ const registrarPadecimientos = ({
 const obtenerPadecimientos = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
-         "id_historial_medico AS ID_HISTORIAL_MEDICO, " +
-         "hospitalizado AS HOSPITALIZADO, " +
-         "descripcion_hos AS DESCRIPCION_HOS, " +
-         "tratamiento_medico AS TRATAMIENTO_MEDICO, " +
-         'alergia AS ALERGIA, ' +
-         'descripcion_alergia AS DESCRIPCION_ALERGIA, ' +
-         'hemorragia AS HEMORRAGIA, ' +
-         'medicamento AS MEDICAMENTO, ' +
-         'descripcion_medicamento AS DESCRIPCION_MEDICAMENTO, ' +
-         'id_ficha AS ID_FICHA ' +
-         'FROM historial_medico WHERE id_ficha = ?';
+         "id_padecimiento AS ID_PADECIMIENTO, " +
+         "corazon AS CORAZON, " +
+         "artritis AS ARTRITIS, " +
+         "tuberculosis AS TUBERCULOSIS, " +
+         'presion_alta AS PRESION_ALTA, ' +
+         'presion_baja AS PRESION_BAJA, ' +
+         'fiebrereu AS FIEBREREU, ' +
+         'anemia AS ANEMIA, ' +
+         'epilepsia AS EPILEPSIA, ' +
+         'diabetes AS DIABETES, ' +
+         'otros AS OTROS, ' +
+         'id_historial_medico AS ID_HISTORIAL_MEDICO ' +
+         'FROM padecimientos WHERE id_historial_medico = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
@@ -58,7 +60,41 @@ const obtenerPadecimientos = ({ id }) => {
    });
 }
 
+const actualizarPadecimientos = ({ id }, {
+   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
+   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
+   DESCRIPCION_MEDICAMENTO
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE padecimientos SET ' +
+         'corazon = ?,' +
+         'artritis = ?,' +
+         'tuberculosis = ?,' +
+         'presion_alta = ?,' +
+         'presion_baja = ?, ' +
+         'fiebrereu = ?, ' +
+         'epilepsia = ?, ' +
+         'diabetes = ?, ' +
+         'otros = ? ' +
+         'WHERE id_padecimiento = ?';
+
+      mysqlConnection.query(query, [
+         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
+         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
+         DESCRIPCION_MEDICAMENTO, id
+      ], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'PADECIMIENTOS ACTUALIZADOS' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarPadecimientos: registrarPadecimientos,
-   obtenerPadecimientos : obtenerPadecimientos
+   obtenerPadecimientos : obtenerPadecimientos,
+   actualizarPadecimientos : actualizarPadecimientos
 }

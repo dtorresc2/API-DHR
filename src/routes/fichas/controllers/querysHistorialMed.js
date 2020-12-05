@@ -58,7 +58,7 @@ const obtenerHistorialMedico = ({ id }) => {
    });
 }
 
-// Actualizar usuarios
+// Actualizar historial medico
 const actualizarHistorialMedico = ({ id }, {
    HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
    ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
@@ -99,7 +99,7 @@ const eliminarHistorialMedico = ({ id }) => {
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'FICHA ELIMINADA' });
+            resolve({ ID: id, MENSAJE: 'HISTORIAL ELIMINADO' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
