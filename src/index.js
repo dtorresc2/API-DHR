@@ -24,6 +24,7 @@ app.use(require('./routes/bitacora/bitacoras'))
 app.use(require('./routes/fichas/fichas'));
 app.use(require('./routes/fichas/pagos'));
 app.use(require('./routes/fichas/historialMed'));
+app.use(require('./routes/fichas/padecimientos'));
 
 app.use(require('./routes/piezas/piezas'));
 
