@@ -52,9 +52,7 @@ const obtenerHistorialOdontodologico = ({ id }) => {
 }
 
 const actualizarHistorialOdontogologico = ({ id }, {
-   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-   DESCRIPCION_MEDICAMENTO
+   DOLOR, DESCRIPCION_DOLOR, GINGIVITIS, OTROS,
 }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE historial_odonto SET ' +
@@ -65,9 +63,7 @@ const actualizarHistorialOdontogologico = ({ id }, {
          'WHERE id_historial_odonto = ?';
 
       mysqlConnection.query(query, [
-         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-         DESCRIPCION_MEDICAMENTO, id
+         DOLOR, DESCRIPCION_DOLOR, GINGIVITIS, OTROS, id
       ], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'HISTORIAL ACTUALIZADO' });

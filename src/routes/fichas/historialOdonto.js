@@ -23,5 +23,4 @@ router.delete('/historial-odonto/:id', async (req, res) => {
    res.json(resultado);
 });
 
-
 module.exports = router;
