@@ -1,25 +1,22 @@
 const mysqlConnection = require('../../../config/db');
 
 const registrarTratamiento = ({
-   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-   DESCRIPCION_MEDICAMENTO, ID_FICHA
+   PLAN, COSTO, FECHA, ID_PIEZA, ID_SERVICIO,
+   ID_HISTORIAL_ODONTO
 }) => {
    return new Promise((resolve, reject) => {
-      const query = 'INSERT INTO historial_medico ' +
-         '(hospitalizado,descripcion_hos,tratamiento_medico,' +
-         'alergia,descripcion_alergia,hemorragia,medicamento,' +
-         'descripcion_medicamento,id_ficha) ' +
-         'VALUES (?,?,?,?,?,?,?,?,?)';
+      const query = 'INSERT INTO tratamientos ' +
+         '(plan,costo,fecha,' +
+         'id_pieza,id_servicio,id_historial_odonto) ' +
+         'VALUES (?,?,?,?,?,?)';
 
       mysqlConnection.query(query, [
-         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-         DESCRIPCION_MEDICAMENTO, ID_FICHA
+         PLAN, COSTO, FECHA, ID_PIEZA, ID_SERVICIO,
+         ID_HISTORIAL_ODONTO
       ], (err, rows, fields) => {
          if (!err) {
             resolve(
-               { ID: rows.insertId, MENSAJE: "HISTORIAL REGISTRADO" }
+               { ID: rows.insertId, MENSAJE: "TRATAMIENTO REGISTRADO" }
             );
          }
          else {
