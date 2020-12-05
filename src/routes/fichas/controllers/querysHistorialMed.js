@@ -91,7 +91,7 @@ const actualizarHistorialMedico = ({ id }, {
    });
 }
 
-// Eliminar usuarios
+// Eliminar historial
 const eliminarHistorialMedico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM historial_medico ' +
