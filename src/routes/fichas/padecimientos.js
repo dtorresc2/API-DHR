@@ -14,6 +14,7 @@ router.get('/padecimientos/:id', async (req, res) => {
 });
 
 router.put('/padecimientos/:id', async (req, res) => {
+   console.log(req.params);
    const resultado = await querysPadecimientos.actualizarPadecimientos(req.params, req.body);
    res.json(resultado);
 });

@@ -61,9 +61,9 @@ const obtenerPadecimientos = ({ id }) => {
 }
 
 const actualizarPadecimientos = ({ id }, {
-   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-   DESCRIPCION_MEDICAMENTO
+   CORAZON, ARTRITIS, TUBERCULOSIS,
+   PRESION_ALTA, PRESION_BAJA, FIEBREREU, ANEMIA,
+   EPILEPSIA, DIABETES, OTROS
 }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE padecimientos SET ' +
@@ -73,18 +73,19 @@ const actualizarPadecimientos = ({ id }, {
          'presion_alta = ?,' +
          'presion_baja = ?, ' +
          'fiebrereu = ?, ' +
+         'anemia = ?, ' +
          'epilepsia = ?, ' +
          'diabetes = ?, ' +
          'otros = ? ' +
          'WHERE id_padecimiento = ?';
 
       mysqlConnection.query(query, [
-         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-         DESCRIPCION_MEDICAMENTO, id
+         CORAZON, ARTRITIS, TUBERCULOSIS,
+         PRESION_ALTA, PRESION_BAJA, FIEBREREU, ANEMIA,
+         EPILEPSIA, DIABETES, OTROS, id
       ], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'PADECIMIENTOS ACTUALIZADOS' });
+            resolve({ ID: id, MENSAJE: 'PADECIMIENTOS ACTUALIZADOS', ROWS : rows });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -111,7 +112,7 @@ const eliminarPadecimientos = ({ id }) => {
 
 module.exports = {
    registrarPadecimientos: registrarPadecimientos,
-   obtenerPadecimientos : obtenerPadecimientos,
-   actualizarPadecimientos : actualizarPadecimientos,
-   eliminarPadecimientos : eliminarPadecimientos
+   obtenerPadecimientos: obtenerPadecimientos,
+   actualizarPadecimientos: actualizarPadecimientos,
+   eliminarPadecimientos: eliminarPadecimientos
 }

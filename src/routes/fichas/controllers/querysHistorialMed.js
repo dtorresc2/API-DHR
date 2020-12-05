@@ -74,7 +74,7 @@ const actualizarHistorialMedico = ({ id }, {
          'hemorragia = ?, ' +
          'medicamento = ?, ' +
          'descripcion_medicamento = ? ' +
-         'WHERE id_ficha = ?';
+         'WHERE id_historial_medico = ?';
 
       mysqlConnection.query(query, [
          HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
@@ -95,7 +95,7 @@ const actualizarHistorialMedico = ({ id }, {
 const eliminarHistorialMedico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM historial_medico ' +
-         'WHERE id_ficha = ?';
+         'WHERE id_historial_medico = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
