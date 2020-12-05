@@ -115,7 +115,7 @@ const obtenerConteoFichas = (id) => {
    });
 }
 
-// Actualizar usuarios
+// Actualizar fichas
 const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE fichas SET ' +

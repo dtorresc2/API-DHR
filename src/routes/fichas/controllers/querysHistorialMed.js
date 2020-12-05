@@ -58,7 +58,59 @@ const obtenerHistorialMedico = ({ id }) => {
    });
 }
 
+// Actualizar usuarios
+const actualizarHistorialMedico = ({ id }, {
+   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
+   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
+   DESCRIPCION_MEDICAMENTO
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'UPDATE historial_medico SET ' +
+         'hospitalizado = ?,' +
+         'descripcion_hos = ?,' +
+         'tratamiento_medico = ?,' +
+         'alergia = ?,' +
+         'descripcion_alergia = ?, ' +
+         'hemorragia = ?, ' +
+         'medicamento = ?, ' +
+         'descripcion_medicamento = ? ' +
+         'WHERE id_ficha = ?';
+
+      mysqlConnection.query(query, [
+         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
+         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
+         DESCRIPCION_MEDICAMENTO, id
+      ], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'HISTORIAL ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+// Eliminar usuarios
+const eliminarHistorialMedico = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM historial_medico ' +
+         'WHERE id_ficha = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'FICHA ELIMINADA' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarHistorialMedico: registrarHistorialMedico,
-   obtenerHistorialMedico: obtenerHistorialMedico
+   obtenerHistorialMedico: obtenerHistorialMedico,
+   actualizarHistorialMedico: actualizarHistorialMedico,
+   eliminarHistorialMedico : eliminarHistorialMedico
 }
