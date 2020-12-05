@@ -93,8 +93,25 @@ const actualizarPadecimientos = ({ id }, {
    });
 }
 
+const eliminarPadecimientos = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM padecimientos ' +
+         'WHERE id_padecimiento = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'PADECIMIENTOS ELIMINADOS' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarPadecimientos: registrarPadecimientos,
    obtenerPadecimientos : obtenerPadecimientos,
-   actualizarPadecimientos : actualizarPadecimientos
+   actualizarPadecimientos : actualizarPadecimientos,
+   eliminarPadecimientos : eliminarPadecimientos
 }
