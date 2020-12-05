@@ -26,6 +26,7 @@ app.use(require('./routes/fichas/pagos'));
 app.use(require('./routes/fichas/historialMed'));
 app.use(require('./routes/fichas/padecimientos'));
 app.use(require('./routes/fichas/historialOdonto'));
+app.use(require('./routes/fichas/tratamientos'));
 
 app.use(require('./routes/piezas/piezas'));
 
