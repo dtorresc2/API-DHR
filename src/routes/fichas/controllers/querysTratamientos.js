@@ -3,7 +3,7 @@ const mysqlConnection = require('../../../config/db');
 const registrarTratamiento = ({
    PLAN, COSTO, FECHA, ID_PIEZA, ID_SERVICIO,
    ID_HISTORIAL_ODONTO
-}) => {
+}, NUMERO) => {
    return new Promise((resolve, reject) => {
       const query = 'INSERT INTO tratamientos ' +
          '(numero,plan,costo,fecha,' +
