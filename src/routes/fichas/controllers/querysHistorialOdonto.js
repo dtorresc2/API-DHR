@@ -2,20 +2,18 @@ const mysqlConnection = require('../../../config/db');
 
 // Registrar historial odontodologico
 const registrarHistorialOdontodologico = ({
-   HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-   ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-   DESCRIPCION_MEDICAMENTO, ID_FICHA
+   DOLOR, DESCRIPCION_DOLOR, GINGIVITIS,
+   OTROS, ID_FICHA
 }) => {
    return new Promise((resolve, reject) => {
-      const query = 'INSERT INTO historial_medico ' +
+      const query = 'INSERT INTO historial_odonto ' +
          '(dolor,descripcion_dolor,gingivitis,' +
          'otros,id_ficha) ' +
-         'VALUES (?,?,?,?,?,?,?,?,?)';
+         'VALUES (?,?,?,?,?)';
 
       mysqlConnection.query(query, [
-         HOSPITALIZADO, DESCRIPCION_HOS, TRATAMIENTO_MEDICO,
-         ALERGIA, DESCRIPCION_ALERGIA, HEMORRAGIA, MEDICAMENTO,
-         DESCRIPCION_MEDICAMENTO, ID_FICHA
+         DOLOR, DESCRIPCION_DOLOR, GINGIVITIS,
+         OTROS, ID_FICHA
       ], (err, rows, fields) => {
          if (!err) {
             resolve(
@@ -31,6 +29,29 @@ const registrarHistorialOdontodologico = ({
    });
 }
 
+const obtenerHistorialOdontodologico = ({ id }) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         "id_historial_odonto AS ID_HISTORIAL_ODONTO, " +
+         "dolor AS DOLOR, " +
+         "descripcion_dolor AS DESCRIPCION_DOLOR, " +
+         "gingivitis AS GINGIVITIS, " +
+         'otros AS OTROS, ' +
+         'id_ficha AS ID_FICHA ' +
+         'FROM historial_odonto WHERE id_ficha = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
-   registrarHistorialOdontodologico : registrarHistorialOdontodologico
+   registrarHistorialOdontodologico: registrarHistorialOdontodologico,
+   obtenerHistorialOdontodologico : obtenerHistorialOdontodologico
 }
