@@ -39,8 +39,6 @@ router.post('/cuentas/login', async (req, res) => {
    const { PASSWORD } = req.body;
    const resultadoID = await querysUsuarios.obtenerIdUsuario(req.body.ID_USUARIO);
 
-   // console.log(resultadoID);
-
    if (resultadoID != undefined) {
       req.body.ID_USUARIO = resultadoID.ID_USUARIO;
       const resultado = await querysCuentas.obtenerConteoCuentaSesion(req.body);
@@ -50,7 +48,8 @@ router.post('/cuentas/login', async (req, res) => {
          const resultadoDesencriptar = await querysCuentas.desencriptarPassowrd(PASSWORD, resultadoExistencia.PASSWORD);
 
          res.json({
-            ID: resultadoExistencia.ID_CUENTA,
+            ID_USUARIO : resultadoID.ID_USUARIO,
+            ID_CUENTA: resultadoExistencia.ID_CUENTA,
             MENSAJE: resultadoDesencriptar.MENSAJE,
             ESTADO: resultadoDesencriptar.ESTADO
          });
