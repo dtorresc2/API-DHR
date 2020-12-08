@@ -37,17 +37,25 @@ router.post('/cuentas', async (req, res) => {
 
 router.post('/cuentas/login', async (req, res) => {
    const { PASSWORD } = req.body;
-   const resultado = await querysCuentas.obtenerConteoCuentaSesion(req.body);
+   const resultadoID = await querysUsuarios.obtenerIdUsuario(req.body.ID_USUARIO);
 
-   if (resultado.CONTEO > 0) {
-      const resultadoExistencia = await querysCuentas.obtenerCuentaSesion(req.body);
-      const resultadoDesencriptar = await querysCuentas.desencriptarPassowrd(PASSWORD, resultadoExistencia.PASSWORD);
+   if (resultadoID.ID_USUARIO > 0) {
+      req.body.ID_USUARIO = resultadoID.ID_USUARIO;
+      const resultado = await querysCuentas.obtenerConteoCuentaSesion(req.body);
 
-      res.json({
-         ID: resultadoExistencia.ID_CUENTA,
-         MENSAJE: resultadoDesencriptar.MENSAJE,
-         ESTADO: resultadoDesencriptar.ESTADO
-      });
+      if (resultado.CONTEO > 0) {
+         const resultadoExistencia = await querysCuentas.obtenerCuentaSesion(req.body);
+         const resultadoDesencriptar = await querysCuentas.desencriptarPassowrd(PASSWORD, resultadoExistencia.PASSWORD);
+
+         res.json({
+            ID: resultadoExistencia.ID_CUENTA,
+            MENSAJE: resultadoDesencriptar.MENSAJE,
+            ESTADO: resultadoDesencriptar.ESTADO
+         });
+      }
+      else {
+         res.json({ ID: -1, MENSAJE: "USUARIO NO ENCONTRADO", ESTADO: -1 });
+      }
    }
    else {
       res.json({ ID: -1, MENSAJE: "USUARIO NO ENCONTRADO", ESTADO: -1 });
