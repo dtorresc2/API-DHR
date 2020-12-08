@@ -39,7 +39,9 @@ router.post('/cuentas/login', async (req, res) => {
    const { PASSWORD } = req.body;
    const resultadoID = await querysUsuarios.obtenerIdUsuario(req.body.ID_USUARIO);
 
-   if (resultadoID.ID_USUARIO > 0) {
+   // console.log(resultadoID);
+
+   if (resultadoID != undefined) {
       req.body.ID_USUARIO = resultadoID.ID_USUARIO;
       const resultado = await querysCuentas.obtenerConteoCuentaSesion(req.body);
 
@@ -58,7 +60,7 @@ router.post('/cuentas/login', async (req, res) => {
       }
    }
    else {
-      res.json({ ID: -1, MENSAJE: "USUARIO NO ENCONTRADO", ESTADO: -1 });
+      res.json({ ID: -1, MENSAJE: "CODIGO NO REGISTRADO", ESTADO: -1 });
    }
 });
 
