@@ -72,7 +72,7 @@ const registrarUsuario = ({ CODIGO, NOMBRE, URL, FECHA, APP, WEB }) => {
 }
 
 // Obtener codigo de usuario general
-const obtenerIdUsuario = ({ id }) => {
+const obtenerIdUsuario = ( id ) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
          'id_usuario AS ID_USUARIO ' +
@@ -80,6 +80,24 @@ const obtenerIdUsuario = ({ id }) => {
          'WHERE codigo = ? ';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+// Obtener codigo de usuario general
+const obtenerConteoUsuarios = () => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         'MAX(id_usuario) AS CONTEO ' +
+         'FROM usuarios';
+
+      mysqlConnection.query(query, (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
@@ -129,6 +147,7 @@ const eliminarUsuario = ({ id }) => {
 module.exports = {
    obtenerListadoUsuarios: obtenerListadoUsuarios,
    obtenerUsuarioEspecifico: obtenerUsuarioEspecifico,
+   obtenerConteoUsuarios : obtenerConteoUsuarios,
    registrarUsuario: registrarUsuario,
    obtenerIdUsuario: obtenerIdUsuario,
    actualizarUsuario: actualizarUsuario,
