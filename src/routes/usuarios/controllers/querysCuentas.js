@@ -53,7 +53,7 @@ const obtenerCuentaEspecifica = ({ id, user }) => {
          'id_usuario AS ID_USUARIO ' +
          'FROM cuentas ' +
          'WHERE id_cuenta = ? ' +
-         'AND id_usuario = ?' +
+         'AND id_usuario = ?';
 
          mysqlConnection.query(query, [id, user], (err, rows, fields) => {
             if (!err) {
