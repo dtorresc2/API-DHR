@@ -1,6 +1,6 @@
 const dotenv = require('dotenv');
 const aws = require('aws-sdk');
-const { eliminarUsuario } = require('../routes/usuarios/controllers/querysUsuarios');
+const fs = require('fs');
 
 // Configuracion archivo - variables de entorno
 const envFile = "./src/config/.env";
