@@ -3,7 +3,6 @@ const router = express.Router();
 
 const querysUsuarios = require('../usuarios/controllers/querysUsuarios');
 const funcionesS3 = require('../../config/s3');
-const { param } = require('./cuentas');
 
 router.get('/usuarios', async (req, res) => {
    const listadoUsuarios = await querysUsuarios.obtenerListadoUsuarios();
@@ -39,7 +38,7 @@ router.put('/usuarios/:id', async (req, res) => {
    else {
       const buffer = Buffer.from(req.body.buffer, 'base64');
       // const currentTime = new Date().getTime();
-      const resultadoURL = await crudProductos.imageUpload(`${nombre}.jpg`, buffer);
+      const resultadoURL = await funcionesS3.imageUpload(`${nombre}.jpg`, buffer);
       res.json(resultado, { URL: resultadoURL });
    }
 });
