@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv');
-const { env } = require('process');
 // require('../../src/config/')
 
 // Configuracion archivo - variables de entorno
