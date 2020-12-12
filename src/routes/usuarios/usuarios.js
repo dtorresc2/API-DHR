@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const querysUsuarios = require('../usuarios/controllers/querysUsuarios');
+const funcionesS3 = require('../../config/s3');
 
 router.get('/usuarios', async (req, res) => {
    const listadoUsuarios = await querysUsuarios.obtenerListadoUsuarios();
@@ -28,8 +29,29 @@ router.post('/usuarios', async (req, res) => {
 });
 
 router.put('/usuarios/:id', async (req, res) => {
+   var nombre = "imagen-" + req.params.id;
+   req.body.URL = nombre;
    const resultado = await querysUsuarios.actualizarUsuario(req.params, req.body);
-   res.json(resultado);
+   if (req.body.buffer == '0') { 
+      res.json(resultado);
+   }
+   else {
+      const buffer = Buffer.from(req.body.buffer, 'base64');
+      // const currentTime = new Date().getTime();
+      const resultadoURL = await funcionesS3.imageUpload(`${nombre}.jpg`, buffer);
+      res.json(resultado, { URL: resultadoURL });
+   }
+});
+
+// Funcion S3 prueba
+router.get('/productoS3', async (req, res) => {
+   const resultadoS3 = await funcionesS3.subirS3();
+   res.json({ res: resultadoS3 });
+});
+
+router.get('/eliminarS3', async (req, res) => {
+   const resultadoS3 = await funcionesS3.eliminarImagen({ key: 'not.jpg' });
+   res.json({ res: resultadoS3 });
 });
 
 router.delete('/usuarios/:id', async (req, res) => {
