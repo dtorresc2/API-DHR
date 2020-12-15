@@ -32,14 +32,13 @@ router.put('/usuarios/:id', async (req, res) => {
    var nombre = "imagen-" + req.params.id;
    req.body.URL = nombre;
    const resultado = await querysUsuarios.actualizarUsuario(req.params, req.body);
-   if (req.body.buffer == '0') { 
+   if (req.body.buffer == '0') {
       res.json(resultado);
    }
    else {
       const buffer = Buffer.from(req.body.buffer, 'base64');
-      // const currentTime = new Date().getTime();
       const resultadoURL = await funcionesS3.imageUpload(`${nombre}.jpg`, buffer);
-      res.json(resultado, { URL: resultadoURL });
+      res.json({ ID: resultado.ID, MENSAJE: resultado.MENSAJE, URL: resultadoURL });
    }
 });
 
