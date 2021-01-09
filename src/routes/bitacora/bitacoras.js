@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const moment = require('moment-timezone');
 
 const querysBitacora = require('../bitacora/controllers/querysBitacoras');
 
@@ -14,6 +15,10 @@ router.get('/bitacora/:id', async (req, res) => {
 });
 
 router.post('/bitacora', async (req, res) => {
+   const fechaMoment = moment().tz("America/Guatemala").format('YYYY-MM-DD HH:mm:ss');
+   req.body.FECHA = fechaMoment;
+   console.log(req.body);
+
    const resultado = await querysBitacora.registrarBitacora(req.body);
    res.json(resultado);
 });
