@@ -35,7 +35,7 @@ const obtenerListadoBitacoraXUsuario = ({ id }) => {
          "id_usuario AS ID_USUARIO, " +
          "(SELECT usuario FROM cuentas WHERE cuentas.id_cuenta = bitacora.id_cuenta) AS CUENTA " +
          'FROM bitacora ' +
-         'WHERE id_usuario = ? ';
+         'WHERE id_usuario = ? ORDER BY fecha DESC';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
