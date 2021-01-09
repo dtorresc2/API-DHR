@@ -6,9 +6,11 @@ const obtenerListadoBitacora = () => {
       const query = 'SELECT ' +
          'id_bitacora AS ID_BITACORA, ' +
          'accion AS ACCION, ' +
-         "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
+         // "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
+         "CONCAT(DATE_FORMAT(fecha,'%d/%m/%Y'),' ',DATE_FORMAT(fecha,'%l:%i:%s %p')) AS FECHA, " +
          "id_cuenta AS ID_CUENTA, " +
-         "id_usuario AS ID_USUARIO " +
+         "id_usuario AS ID_USUARIO, " +
+         "(SELECT usuario FROM cuentas WHERE cuentas.id_cuenta = bitacora.id_cuenta) AS CUENTA " +
          'FROM bitacora';
 
       mysqlConnection.query(query, (err, rows, fields) => {
@@ -28,9 +30,10 @@ const obtenerListadoBitacoraXUsuario = ({ id }) => {
       const query = 'SELECT ' +
          'id_bitacora AS ID_BITACORA, ' +
          'accion AS ACCION, ' +
-         "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
+         "CONCAT(DATE_FORMAT(fecha,'%d/%m/%Y'),' ',DATE_FORMAT(fecha,'%l:%i:%s %p')) AS FECHA, " +
          "id_cuenta AS ID_CUENTA, " +
-         "id_usuario AS ID_USUARIO " +
+         "id_usuario AS ID_USUARIO, " +
+         "(SELECT usuario FROM cuentas WHERE cuentas.id_cuenta = bitacora.id_cuenta) AS CUENTA " +
          'FROM bitacora ' +
          'WHERE id_usuario = ? ';
 
