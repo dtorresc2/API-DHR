@@ -8,6 +8,11 @@ router.post('/padecimientos', async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/padecimientos/full', async (req, res) => {
+   const resultado = await querysPadecimientos.registrarPadecimientos(req.body);
+   res.json(resultado);
+});
+
 router.get('/padecimientos/:id', async (req, res) => {
    const resultado = await querysPadecimientos.obtenerPadecimientos(req.params);
    res.json(resultado);

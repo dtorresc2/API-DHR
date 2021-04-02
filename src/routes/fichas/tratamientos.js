@@ -8,16 +8,22 @@ router.post('/tratamientos', async (req, res) => {
 
    if (req.body.TRATAMIENTOS.length > 0) {
       let arreglo = req.body.TRATAMIENTOS;
-      arreglo.forEach(async (element, index) => {
+      // arreglo.forEach(async (element, index) => {
+      //    const resultado = await querysTratamientos.registrarTratamiento(element, index + 1);
+      //    if (resultado.ID != -1)
+      //       contador++;
+      // });
+
+      for (let element of arreglo) {
          const resultado = await querysTratamientos.registrarTratamiento(element, index + 1);
-         if (resultado.ID != -1)
-            contador++;
-      });
+      }
+
+      res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
    }
    
-   setTimeout(() => {
-      res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
-   }, 1000);
+   // setTimeout(() => {
+   //    res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
+   // }, 1000);
 });
 
 router.get('/tratamientos/:id', async (req, res) => {
