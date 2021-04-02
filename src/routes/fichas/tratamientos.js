@@ -8,11 +8,6 @@ router.post('/tratamientos', async (req, res) => {
 
    if (req.body.TRATAMIENTOS.length > 0) {
       let arreglo = req.body.TRATAMIENTOS;
-      // arreglo.forEach(async (element, index) => {
-      //    const resultado = await querysTratamientos.registrarTratamiento(element, index + 1);
-      //    if (resultado.ID != -1)
-      //       contador++;
-      // });
 
       for (let element of arreglo) {
          contador++;
@@ -24,10 +19,6 @@ router.post('/tratamientos', async (req, res) => {
    else {
       res.json({ MENSAJE: 'ERROR', CUENTA: -1 });
    }
-
-   // setTimeout(() => {
-   //    res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
-   // }, 1000);
 });
 
 router.get('/tratamientos/:id', async (req, res) => {
@@ -36,24 +27,26 @@ router.get('/tratamientos/:id', async (req, res) => {
 });
 
 router.put('/tratamientos/:id', async (req, res) => {
-   // const resultado = await querysTratamientos.actualizarHistorialMedico(req.params, req.body);
    let contador = 0;
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
 
    if (resultado.ID != -1) {
       if (req.body.TRATAMIENTOS.length > 0) {
          let arreglo = req.body.TRATAMIENTOS;
-         arreglo.forEach(async (element, index) => {
-            const resultadoRegistro = await querysTratamientos.registrarTratamiento(element, index + 1);
-            if (resultadoRegistro.ID != -1)
-               contador++;
-         });
+
+         for (let element of arreglo) {
+            contador++;
+            const resultado = await querysTratamientos.registrarTratamiento(element, contador);
+         }
+         res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
+      }
+      else {
+         res.json({ MENSAJE: 'ERROR', CUENTA: -1 });
       }
    }
-   // res.json(resultado);
-   setTimeout(() => {
-      res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
-   }, 1000);
+   else {
+      res.json({ MENSAJE: 'ERROR', CUENTA: -1 });
+   }
 });
 
 router.delete('/tratamientos/:id', async (req, res) => {
