@@ -31,7 +31,7 @@ router.post('/fichas', async (req, res) => {
 
    // Registrar Tratamientos
    let contador = 0;
-   
+
    for (let i = 0; i < req.body.HISTORIAL_ODONTO.TRATAMIENTOS.length; i++) {
       req.body.HISTORIAL_ODONTO.TRATAMIENTOS[i].ID_HISTORIAL_ODONTO = resultadoHO.ID;
       req.body.HISTORIAL_ODONTO.TRATAMIENTOS[i].FECHA = fechaMoment;
@@ -42,38 +42,6 @@ router.post('/fichas', async (req, res) => {
       contador++;
       const resultado = await querysTratamientos.registrarTratamiento(element, contador);
    }
-
-   // Registrar Historial Fotografico
-
-   // Registrar Pagos
-
-   // DATOS DE FICHA
-   // console.log('-> FICHA <-');
-   // req.body.FICHA.FECHA = fechaMoment;
-   // console.log('FICHA => ', req.body.FICHA);
-   // console.log('');
-
-   // DATOS DE HISTORIAL MEDICO
-   // req.body.HISTORIAL_MEDICO.ID_FICHA = 23;
-   // console.log('HISTORIAL MEDICO => ', req.body.HISTORIAL_MEDICO);
-   // console.log('');
-
-   // DATOS DE PADECIMIENTOS
-   // req.body.HISTORIAL_MEDICO.PADECIMIENTOS.ID_HISTORIAL_MEDICO = 34;
-   // console.log('PADECIMIENTOS => ', req.body.HISTORIAL_MEDICO.PADECIMIENTOS);
-   // console.log('');
-
-   // DATOS DE HISTORIAL ODONTO
-   // req.body.HISTORIAL_ODONTO.ID_FICHA = 23;
-   // console.log('HISTORIAL ODONTO => ', req.body.HISTORIAL_ODONTO);
-   // console.log('');
-
-   // TRATAMIENTOS
-   // for (let i = 0; i < req.body.HISTORIAL_ODONTO.TRATAMIENTOS.length; i++) {
-   //    req.body.HISTORIAL_ODONTO.TRATAMIENTOS[i].ID_HISTORIAL_ODONTO = 51;
-   // }
-   // console.log('TRATAMIENTOS => ', req.body.HISTORIAL_ODONTO.TRATAMIENTOS);
-   // console.log('');
 
    // FOTOS
    // for (let i = 0; i < req.body.HISTORIAL_FOTOS.length; i++) {
@@ -89,7 +57,10 @@ router.post('/fichas', async (req, res) => {
    // console.log('PAGOS => ', req.body.PAGOS);
    // console.log('');
 
-   res.json(req.body);
+   res.json({
+      ID: resultadoFicha.ID,
+      ESTADO = true
+   });
 });
 
 router.get('/fichas', async (req, res) => {
