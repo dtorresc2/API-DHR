@@ -31,12 +31,13 @@ router.post('/fichas', async (req, res) => {
 
    // Registrar Tratamientos
    let contador = 0;
-   let arreglo = req.body.HISTORIAL_ODONTO.TRATAMIENTOS;
-
+   
    for (let i = 0; i < req.body.HISTORIAL_ODONTO.TRATAMIENTOS.length; i++) {
       req.body.HISTORIAL_ODONTO.TRATAMIENTOS[i].ID_HISTORIAL_ODONTO = resultadoHO.ID;
+      req.body.HISTORIAL_ODONTO.TRATAMIENTOS[i].FECHA = fechaMoment;
    }
 
+   let arreglo = req.body.HISTORIAL_ODONTO.TRATAMIENTOS;
    for (let element of arreglo) {
       contador++;
       const resultado = await querysTratamientos.registrarTratamiento(element, contador);
