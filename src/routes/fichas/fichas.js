@@ -1,12 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const moment = require('moment-timezone');
+const funcionesS3 = require('./../../config/s3');
 
 const querysFichas = require('../fichas/controllers/querysFichas');
 const querysHistorialM = require('./controllers/querysHistorialMed');
 const querysPadecimientos = require('./controllers/querysPadecimientos');
 const querysHistorialO = require('./controllers/querysHistorialOdonto');
 const querysTratamientos = require('./controllers/querysTratamientos');
+const querysFotosFN = require('./controllers/querysFotosFN');
 
 router.post('/fichas', async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD');
@@ -44,6 +46,25 @@ router.post('/fichas', async (req, res) => {
    }
 
    // FOTOS
+   for (let i = 0; i < req.body.HISTORIAL_FOTOS.length; i++) {
+      req.body.HISTORIAL_FOTOS[i].ID_FICHA = resultadoFicha.ID;
+
+      // RegistrarImagen
+      let ruta = "FN-" + req.body.FICHA.ID_USUARIO + "-" + resultadoFicha.ID;
+      let nombre = "HF-" + (i + 1);
+      req.body.URL = nombre;
+
+      const buffer = Buffer.from(req.body.buffer, 'base64');
+      const resultadoURL = await funcionesS3.imageUpload(`${ruta}/${nombre}.jpg`, buffer);
+
+      // Ajustar Datos
+      req.body.HISTORIAL_FOTOS[i].DESCRIPCION = "Historial Fotografico - Foto #" + (i + 1);
+      req.body.HISTORIAL_FOTOS[i].URL = ruta;
+      req.body.HISTORIAL_FOTOS[i].NOMBRE = nombre;
+      
+      const resultadoFoto = await querysFotosFN.registrarFotos(req.body.HISTORIAL_FOTOS[i]);
+   }
+
    // for (let i = 0; i < req.body.HISTORIAL_FOTOS.length; i++) {
    //    req.body.HISTORIAL_FOTOS[i].ID_FICHA = 66;
    // }
@@ -59,7 +80,7 @@ router.post('/fichas', async (req, res) => {
 
    res.json({
       ID: resultadoFicha.ID,
-      ESTADO = true
+      ESTADO: true
    });
 });
 
