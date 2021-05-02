@@ -54,7 +54,7 @@ router.post('/fichas', async (req, res) => {
       let nombre = "HF-" + (i + 1);
       req.body.URL = nombre;
 
-      const buffer = Buffer.from(req.body.buffer, 'base64');
+      const buffer = Buffer.from(req.body.HISTORIAL_FOTOS[i].FOTO, 'base64');
       const resultadoURL = await funcionesS3.imageUpload(`${ruta}/${nombre}.jpg`, buffer);
 
       // Ajustar Datos
