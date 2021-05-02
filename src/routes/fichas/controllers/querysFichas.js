@@ -180,6 +180,6 @@ module.exports = {
    obtenerConteoFichas: obtenerConteoFichas,
    obtenerListadoFichasXUsuario: obtenerListadoFichasXUsuario,
    actualizarFichas: actualizarFichas,
-   actualizarEstadoFicha : actualizarEstadoFicha,
+   actualizarEstadoFicha: actualizarEstadoFicha,
    eliminarFicha: eliminarFicha
 }

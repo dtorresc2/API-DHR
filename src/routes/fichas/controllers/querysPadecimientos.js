@@ -85,7 +85,7 @@ const actualizarPadecimientos = ({ id }, {
          EPILEPSIA, DIABETES, OTROS, id
       ], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'PADECIMIENTOS ACTUALIZADOS', ROWS : rows });
+            resolve({ ID: id, MENSAJE: 'PADECIMIENTOS ACTUALIZADOS', ROWS: rows });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });

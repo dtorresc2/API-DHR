@@ -112,5 +112,5 @@ module.exports = {
    registrarHistorialMedico: registrarHistorialMedico,
    obtenerHistorialMedico: obtenerHistorialMedico,
    actualizarHistorialMedico: actualizarHistorialMedico,
-   eliminarHistorialMedico : eliminarHistorialMedico
+   eliminarHistorialMedico: eliminarHistorialMedico
 }
