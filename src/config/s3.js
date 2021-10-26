@@ -23,7 +23,7 @@ aws.config.update({
 
 const s3Bucket = new aws.S3({
    params: {
-      Bucket: 'dhr-sanjose'
+      Bucket: process.env.BUCKET
    }
 });
 
@@ -65,7 +65,6 @@ const subirS3 = async () => {
    return url;
 }
 
-// const eliminarImagen = ({ nombre }) => {
 const eliminarImagen = ({ key }) => {
    return new Promise((resolve, reject) => {
       const data = {
