@@ -26,7 +26,48 @@ const registrarFotos = ({
     });
 }
 
+const obtenerListadoFotosFicha = ({ id }) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT ' +
+            'id_fotos AS ID_FOTOS, ' +
+            'url AS URL, ' +
+            'descripcion AS DESCRIPCION, ' +
+            "nombre AS NOMBRE, " +
+            "id_ficha AS ID_FICHA " +
+            'FROM fotos ' +
+            'WHERE id_ficha = ? ';
+
+        mysqlConnection.query(query, [id], (err, rows, fields) => {
+            if (!err) {
+                resolve(rows);
+            }
+            else {
+                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+            }
+        });
+    });
+}
+
+// Eliminar fotos
+const eliminarFotosFicha = ({ id }) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM fotos ' +
+            'WHERE id_ficha = ?';
+
+        mysqlConnection.query(query, [id], (err, rows, fields) => {
+            if (!err) {
+                resolve({ ID: id, MENSAJE: 'FOTOS ELIMINADAS' });
+            }
+            else {
+                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+            }
+        });
+    });
+}
+
 
 module.exports = {
-    registrarFotos: registrarFotos
+    registrarFotos: registrarFotos,
+    obtenerListadoFotosFicha: obtenerListadoFotosFicha,
+    eliminarFotosFicha: eliminarFotosFicha
 }

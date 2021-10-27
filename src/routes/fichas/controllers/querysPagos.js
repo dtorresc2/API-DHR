@@ -45,7 +45,7 @@ const obtenerListadoPagosFicha = ({ id }) => {
    });
 }
 
-// Eliminar usuarios
+// Eliminar Pagos
 const eliminarPago = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM pagos ' +
@@ -62,7 +62,7 @@ const eliminarPago = ({ id }) => {
    });
 }
 
-// Eliminar usuarios
+// Eliminar Pagos
 const eliminarPagoFicha = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM pagos ' +
