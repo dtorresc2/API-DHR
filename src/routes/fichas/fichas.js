@@ -9,6 +9,7 @@ const querysPadecimientos = require('./controllers/querysPadecimientos');
 const querysHistorialO = require('./controllers/querysHistorialOdonto');
 const querysTratamientos = require('./controllers/querysTratamientos');
 const querysFotosFN = require('./controllers/querysFotosFN');
+const querysPagos = require('./controllers/querysPagos');
 
 router.post('/fichas', async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD');
@@ -65,18 +66,11 @@ router.post('/fichas', async (req, res) => {
       const resultadoFoto = await querysFotosFN.registrarFotos(req.body.HISTORIAL_FOTOS[i]);
    }
 
-   // for (let i = 0; i < req.body.HISTORIAL_FOTOS.length; i++) {
-   //    req.body.HISTORIAL_FOTOS[i].ID_FICHA = 66;
-   // }
-   // console.log('HISTORIAL_FOTOS => ', req.body.HISTORIAL_FOTOS);
-   // console.log('');
-
    // PAGOS
-   // for (let i = 0; i < req.body.PAGOS.length; i++) {
-   //    req.body.PAGOS[i].ID_FICHA = 78;
-   // }
-   // console.log('PAGOS => ', req.body.PAGOS);
-   // console.log('');
+   for (let i = 0; i < req.body.PAGOS.length; i++) {
+      req.body.PAGOS[i].ID_FICHA = resultadoFicha.ID;
+      const resultadoPago = await querysPagos.registrarPago(req.body.PAGOS[i]);
+   }
 
    res.json({
       ID: resultadoFicha.ID,

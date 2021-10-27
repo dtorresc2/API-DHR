@@ -57,6 +57,9 @@ const obtenerListadoFichasEspecifico = ({ id }) => {
          'motivo AS MOTIVO, ' +
          'referente AS REFERENTE, ' +
          'estado AS ESTADO, ' +
+         'debe AS DEBE, ' +
+         'haber AS HABER, ' +
+         'saldo AS SALDO, ' +
          'id_paciente AS ID_PACIENTE, ' +
          'id_usuario AS ID_USUARIO ' +
          'FROM fichas WHERE id_ficha = ?';
@@ -75,16 +78,20 @@ const obtenerListadoFichasEspecifico = ({ id }) => {
 const obtenerListadoFichasXUsuario = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
-         "id_ficha AS ID_FICHA, " +
-         "codigo_interno AS CODIGO_INTERNO, " +
-         "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
-         'medico AS MEDICO, ' +
-         'motivo AS MOTIVO, ' +
-         'referente AS REFERENTE, ' +
-         'estado AS ESTADO, ' +
-         'id_paciente AS ID_PACIENTE, ' +
-         'id_usuario AS ID_USUARIO ' +
-         'FROM fichas WHERE id_usuario = ?';
+         " f.id_ficha AS ID_FICHA, " +
+         " f.codigo_interno AS CODIGO_INTERNO, " +
+         " DATE_FORMAT(f.fecha, '%d/%m/%Y') AS FECHA, " +
+         ' f.motivo AS MOTIVO, ' +
+         ' f.estado AS ESTADO, ' +
+         ' f.debe AS DEBE, ' +
+         ' f.haber AS HABER, ' +
+         ' f.saldo AS SALDO, ' +
+         ' f.id_paciente AS ID_PACIENTE, ' +
+         ' p.nombre AS NOMBRE, ' +
+         ' f.id_usuario AS ID_USUARIO ' +
+         'FROM fichas f ' +
+         ' LEFT JOIN pacientes p ON f.id_paciente = p.id_paciente ' +
+         'WHERE f.id_usuario = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
@@ -100,7 +107,8 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
 // Listado de Pacientes
 const obtenerConteoFichas = (id) => {
    return new Promise((resolve, reject) => {
-      const query = 'SELECT COUNT(*)+1 AS CONTEO ' +
+      const query = 'SELECT ' + 
+         'IFNULL(MAX(codigo_interno), 0) + 1 AS CONTEO ' +
          'FROM fichas ' +
          'WHERE id_usuario = ?';
 
@@ -116,10 +124,10 @@ const obtenerConteoFichas = (id) => {
 }
 
 // Actualizar fichas
-const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO }) => {
+const actualizarFichas = ({ id }, { ID_PACIENTE, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO }) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE fichas SET ' +
-         'codigo_interno = ?,' +
+         'id_paciente = ?,' +
          'fecha = ?,' +
          'medico = ?,' +
          'motivo = ?,' +
@@ -127,7 +135,7 @@ const actualizarFichas = ({ id }, { CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFER
          'estado = ? ' +
          'WHERE id_ficha = ?';
 
-      mysqlConnection.query(query, [CODIGO_INTERNO, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO, id], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_PACIENTE, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO, id], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'FICHA ACTUALIZADA' });
          }
