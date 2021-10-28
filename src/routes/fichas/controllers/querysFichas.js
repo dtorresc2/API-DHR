@@ -83,9 +83,9 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
          " DATE_FORMAT(f.fecha, '%d/%m/%Y') AS FECHA, " +
          ' f.motivo AS MOTIVO, ' +
          ' f.estado AS ESTADO, ' +
-         ' f.debe AS DEBE, ' +
-         ' f.haber AS HABER, ' +
-         ' f.saldo AS SALDO, ' +
+         ' FORMAT(f.debe, 2) AS DEBE, ' +
+         ' FORMAT(f.haber, 2) AS HABER, ' +
+         ' FORMAT(f.saldo, 2) AS SALDO, ' +
          ' f.id_paciente AS ID_PACIENTE, ' +
          ' p.nombre AS NOMBRE, ' +
          ' f.id_usuario AS ID_USUARIO ' +
