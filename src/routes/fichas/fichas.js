@@ -51,9 +51,9 @@ router.post('/fichas', async (req, res) => {
       req.body.HISTORIAL_FOTOS[i].ID_FICHA = resultadoFicha.ID;
 
       // RegistrarImagen
-      let ruta = "FN-" + req.body.FICHA.ID_USUARIO + "-" + resultadoFicha.ID;
+      let ruta = req.body.FICHA.ID_USUARIO + "/FN-" + resultadoFicha.ID;
       let nombre = "HF-" + (i + 1);
-      req.body.URL = nombre;
+      // req.body.URL = nombre;
 
       const buffer = Buffer.from(req.body.HISTORIAL_FOTOS[i].FOTO, 'base64');
       const resultadoURL = await funcionesS3.imageUpload(`${ruta}/${nombre}.jpg`, buffer);

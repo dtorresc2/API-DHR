@@ -65,7 +65,7 @@ const subirS3 = async () => {
    return url;
 }
 
-const eliminarImagen = ({ key }) => {
+const eliminarImagen = ( key ) => {
    return new Promise((resolve, reject) => {
       const data = {
          Key: key
