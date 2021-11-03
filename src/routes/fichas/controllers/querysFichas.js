@@ -104,7 +104,6 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
    });
 }
 
-// Listado de Pacientes
 const obtenerConteoFichas = (id) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' + 
