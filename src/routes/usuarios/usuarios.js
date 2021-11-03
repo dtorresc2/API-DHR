@@ -20,8 +20,6 @@ router.get('/usuarios/:id/codigo', async (req, res) => {
 });
 
 router.post('/usuarios', async (req, res) => {
-   // const currentTime = new Date().getTime();
-   // req.body.CODIGO = currentTime;
    const resultadoConteo = await querysUsuarios.obtenerConteoUsuarios();
    req.body.CODIGO = resultadoConteo.CONTEO + 1000;
    const resultadoRegistro = await querysUsuarios.registrarUsuario(req.body);
