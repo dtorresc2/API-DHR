@@ -60,7 +60,7 @@ const actualizarHistorialOdontogologico = ({ id }, {
          'descripcion_dolor = ?,' +
          'gingivitis = ?,' +
          'otros = ? ' +
-         'WHERE id_historial_odonto = ?';
+         'WHERE id_ficha = ?';
 
       mysqlConnection.query(query, [
          DOLOR, DESCRIPCION_DOLOR, GINGIVITIS, OTROS, id
@@ -78,7 +78,7 @@ const actualizarHistorialOdontogologico = ({ id }, {
 const eliminarHistorialOdontodologico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM historial_odonto ' +
-         'WHERE id_historial_odonto = ?';
+         'WHERE id_ficha = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
