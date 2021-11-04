@@ -91,7 +91,8 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
          ' f.id_usuario AS ID_USUARIO ' +
          'FROM fichas f ' +
          ' LEFT JOIN pacientes p ON f.id_paciente = p.id_paciente ' +
-         'WHERE f.id_usuario = ?';
+         'WHERE f.id_usuario = ? ' +
+         'ORDER BY f.fecha DESC';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {

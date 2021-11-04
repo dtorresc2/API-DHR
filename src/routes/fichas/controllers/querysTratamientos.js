@@ -31,16 +31,21 @@ const registrarTratamiento = ({
 const obtenerTratamientos = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
-         "id_tratamiento AS ID_TRATAMIENTO, " +
-         "numero AS NUMERO, " +
-         "plan AS PLAN, " +
-         "costo AS COSTO, " +
-         "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
-         'id_pieza AS ID_PIEZA, ' +
-         'id_servicio AS ID_SERVICIO, ' +
-         'id_historial_odonto AS ID_HISTORIAL_ODONTO ' +
-         'FROM tratamientos WHERE id_historial_odonto = ? ' +
-         'ORDER BY numero ';
+         "t.id_tratamiento AS ID_TRATAMIENTO, " +
+         "t.numero AS NUMERO, " +
+         "t.plan AS PLAN, " +
+         "t.costo AS COSTO, " +
+         "DATE_FORMAT(t.fecha,'%d/%m/%Y') AS FECHA, " +
+         't.id_pieza AS ID_PIEZA, ' +
+         'p.nombre AS NOMBRE_PIEZA, ' +
+         't.id_servicio AS ID_SERVICIO, ' +
+         's.descripcion AS DESCRIPCION_SERVICIO, ' +
+         't.id_historial_odonto AS ID_HISTORIAL_ODONTO ' +
+         'FROM tratamientos t ' +
+         'LEFT JOIN servicios s ON t.id_servicio = s.id_servicio ' +
+         'LEFT JOIN piezas p ON t.id_pieza = p.id_pieza ' +
+         'WHERE t.id_historial_odonto = ? ' +
+         'ORDER BY t.numero ';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
