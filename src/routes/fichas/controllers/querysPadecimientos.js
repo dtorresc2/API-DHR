@@ -77,7 +77,7 @@ const actualizarPadecimientos = ({ id }, {
          'epilepsia = ?, ' +
          'diabetes = ?, ' +
          'otros = ? ' +
-         'WHERE id_padecimiento = ?';
+         'WHERE id_historial_medico = ?';
 
       mysqlConnection.query(query, [
          CORAZON, ARTRITIS, TUBERCULOSIS,
@@ -97,7 +97,7 @@ const actualizarPadecimientos = ({ id }, {
 const eliminarPadecimientos = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'DELETE FROM padecimientos ' +
-         'WHERE id_padecimiento = ?';
+         'WHERE id_historial_medico = ?';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
