@@ -133,7 +133,7 @@ const actualizarFichas = ({ id }, { ID_PACIENTE, FECHA, MEDICO, MOTIVO, REFERENT
          'referente = ? ' +
          'WHERE id_ficha = ?';
 
-      mysqlConnection.query(query, [ID_PACIENTE, FECHA, MEDICO, MOTIVO, REFERENTE, ESTADO, id], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_PACIENTE, FECHA, MEDICO, MOTIVO, REFERENTE, id], (err, rows, fields) => {
          if (!err) {
             resolve({ ID: id, MENSAJE: 'FICHA ACTUALIZADA' });
          }
