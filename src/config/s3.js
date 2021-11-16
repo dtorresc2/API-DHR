@@ -65,7 +65,7 @@ const subirS3 = async () => {
    return url;
 }
 
-const eliminarImagen = ( key ) => {
+const eliminarImagen = (key) => {
    return new Promise((resolve, reject) => {
       const data = {
          Key: key
@@ -83,8 +83,34 @@ const eliminarImagen = ( key ) => {
    });
 }
 
-module.exports = { 
-   subirS3 : subirS3,
-   imageUpload : imageUpload,
-   eliminarImagen : eliminarImagen
+const eliminarCarpeta = async (dir) => {
+   const s3 = new aws.S3();
+   const listParams = {
+      Bucket: process.env.BUCKET,
+      Prefix: dir
+   };
+
+   const listedObjects = await s3.listObjectsV2(listParams).promise();
+
+   if (listedObjects.Contents.length === 0) return;
+
+   const deleteParams = {
+      Bucket: process.env.BUCKET,
+      Delete: { Objects: [] }
+   };
+
+   listedObjects.Contents.forEach(({ Key }) => {
+      deleteParams.Delete.Objects.push({ Key });
+   });
+
+   await s3.deleteObjects(deleteParams).promise();
+
+   if (listedObjects.IsTruncated) await emptyS3Directory(bucket, dir);
+}
+
+module.exports = {
+   subirS3: subirS3,
+   imageUpload: imageUpload,
+   eliminarImagen: eliminarImagen,
+   eliminarCarpeta: eliminarCarpeta
 }

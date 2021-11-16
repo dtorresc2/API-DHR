@@ -12,7 +12,7 @@ const querysFotosFN = require('./controllers/querysFotosFN');
 const querysPagos = require('./controllers/querysPagos');
 
 router.post('/fichas', async (req, res) => {
-   const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD');
+   const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
    req.body.FICHA.FECHA = fechaMoment;
 
    // Registrar Ficha

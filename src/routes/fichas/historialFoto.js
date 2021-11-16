@@ -2,7 +2,9 @@ const express = require('express');
 const router = express.Router();
 
 const querysFotosFN = require('./controllers/querysFotosFN');
+const querysFichas = require('./controllers/querysFichas');
 const funcionesS3 = require('./../../config/s3');
+// const { CostExplorer } = require('aws-sdk');
 
 
 router.post('/fotos', async (req, res) => {
@@ -17,32 +19,38 @@ router.get('/fotos/:id', async (req, res) => {
 
 router.put('/fotos/:id', async (req, res) => {
    let contador = 0;
-   const resultado = await querysFotosFN.eliminarFotosFicha(req.params);
-   const resultadoS3 = await funcionesS3.eliminarImagen(req.body.HISTORIAL_FOTOS[0].URL);
+   let listadoFotos = await querysFotosFN.obtenerListadoFotosFicha(req.params);
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
+   let resultadoS3 = '';
 
-   if (resultado.ID != -1) {
+   if (listadoFotos.length > 0) {
+      resultadoS3 = await funcionesS3.eliminarCarpeta(listadoFotos[0].URL);
+   }
+
+   const resultadoEliminado = await querysFotosFN.eliminarFotosFicha(req.params);
+
+   if (resultadoEliminado.ID != -1) {
       if (req.body.HISTORIAL_FOTOS.length > 0) {
          let arreglo = req.body.HISTORIAL_FOTOS;
-
          for (let element of arreglo) {
             contador++;
 
             // RegistrarImagen
-            let ruta = element.ID_USUARIO + "/FN-" + element.ID;
-            let nombre = "HF-" + (i + 1);
-            // element.URL = nombre;
+            let ruta = resultadoFichas.ID_USUARIO + "/FN-" + element.ID_FICHA;
+            let nombre = "HF-" + (contador + 1);
+            let nombreArchivo = `${ruta}/${nombre}.jpg`
 
             const buffer = Buffer.from(element.FOTO, 'base64');
-            const resultadoURL = await funcionesS3.imageUpload(`${ruta}/${nombre}.jpg`, buffer);
+            const resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
 
             // Ajustar Datos
-            element.DESCRIPCION = "Historial Fotografico - Foto #" + (i + 1);
+            element.DESCRIPCION = "Historial Fotografico - Foto #" + (contador + 1);
             element.URL = ruta;
-            element.NOMBRE = nombre;
+            element.NOMBRE = nombre + '.jpg';
 
             const resultado = await querysFotosFN.registrarFotos(element);
          }
-         res.json({ MENSAJE: 'FOTOS REGISTRADOS', CUENTA: contador });
+         res.json({ MENSAJE: 'FOTOS REGISTRADAS', CUENTA: contador, S3: resultadoS3 });
       }
       else {
          res.json({ MENSAJE: 'ERROR', CUENTA: -1 });
