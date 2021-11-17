@@ -37,14 +37,14 @@ router.put('/fotos/:id', async (req, res) => {
 
             // RegistrarImagen
             let ruta = resultadoFichas.ID_USUARIO + "/FN-" + element.ID_FICHA;
-            let nombre = "HF-" + (contador + 1);
+            let nombre = "HF-" + (contador);
             let nombreArchivo = `${ruta}/${nombre}.jpg`
 
             const buffer = Buffer.from(element.FOTO, 'base64');
             const resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
 
             // Ajustar Datos
-            element.DESCRIPCION = "Historial Fotografico - Foto #" + (contador + 1);
+            element.DESCRIPCION = "Historial Fotografico - Foto #" + (contador);
             element.URL = ruta;
             element.NOMBRE = nombre + '.jpg';
 
