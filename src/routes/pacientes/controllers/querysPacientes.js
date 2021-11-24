@@ -1,5 +1,4 @@
 const mysqlConnection = require('../../../config/db');
-const { actualizarEstadoFicha } = require('../../fichas/controllers/querysFichas');
 
 // Funcion de Prueba
 const obtenerVersionMYSQL = () => {
@@ -205,6 +204,22 @@ const eliminarPaciente = ({ id }) => {
     });
 }
 
+// Actualizar Saldo Paciente
+const actualizarSaldoPaciente = (ID_USUARIO, ID_PACIENTE) => {
+    return new Promise((resolve, reject) => {
+       const query = 'CALL pa_pacientes_saldos_actualiza(?,?)';
+ 
+       mysqlConnection.query(query, [ID_USUARIO, ID_PACIENTE], (err, rows, fields) => {
+          if (!err) {
+             resolve({ ID: ID_PACIENTE, MENSAJE: 'SALDO ACTUALIZADO' });
+          }
+          else {
+             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+          }
+       });
+    });
+ }
+
 module.exports = {
     obtenerVersionMYSQL: obtenerVersionMYSQL,
     obtenerListadoPacientes: obtenerListadoPacientes,
@@ -214,5 +229,6 @@ module.exports = {
     comprobarPaciente: comprobarPaciente,
     actualizarPaciente: actualizarPaciente,
     actualizarEstadoPaciente: actualizarEstadoPaciente,
-    eliminarPaciente: eliminarPaciente
+    eliminarPaciente: eliminarPaciente,
+    actualizarSaldoPaciente: actualizarSaldoPaciente
 }

@@ -162,15 +162,14 @@ const actualizarEstadoFicha = ({ id }, { ESTADO }) => {
    });
 }
 
-// Eliminar usuarios
+// Eliminar fichas
 const eliminarFicha = ({ id }) => {
    return new Promise((resolve, reject) => {
-      const query = 'DELETE FROM fichas ' +
-         'WHERE id_ficha = ?';
+      const query = 'CALL pa_fichas_eliminar(?)';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'FICHA ELIMINADA' });
+            resolve({ ID: rows[0], MENSAJE: 'FICHA ELIMINADA' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -179,6 +178,21 @@ const eliminarFicha = ({ id }) => {
    });
 }
 
+// Actualizar Saldos - Fichas
+const actualizarSaldoFicha = (ID_USUARIO, ID_FICHA) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_fichas_saldos_actualiza(?,?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, ID_FICHA], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: ID_FICHA, MENSAJE: 'SALDO ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
 
 module.exports = {
    registrarFicha: registrarFicha,
@@ -188,5 +202,6 @@ module.exports = {
    obtenerListadoFichasXUsuario: obtenerListadoFichasXUsuario,
    actualizarFichas: actualizarFichas,
    actualizarEstadoFicha: actualizarEstadoFicha,
-   eliminarFicha: eliminarFicha
+   eliminarFicha: eliminarFicha,
+   actualizarSaldoFicha: actualizarSaldoFicha
 }

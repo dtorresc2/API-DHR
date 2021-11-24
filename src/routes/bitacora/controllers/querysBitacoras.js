@@ -6,7 +6,6 @@ const obtenerListadoBitacora = () => {
       const query = 'SELECT ' +
          'id_bitacora AS ID_BITACORA, ' +
          'accion AS ACCION, ' +
-         // "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
          "CONCAT(DATE_FORMAT(fecha,'%d/%m/%Y'),' ',DATE_FORMAT(fecha,'%l:%i:%s %p')) AS FECHA, " +
          "id_cuenta AS ID_CUENTA, " +
          "id_usuario AS ID_USUARIO, " +
@@ -27,19 +26,11 @@ const obtenerListadoBitacora = () => {
 // Listado de Bitacora
 const obtenerListadoBitacoraXUsuario = ({ id }) => {
    return new Promise((resolve, reject) => {
-      const query = 'SELECT ' +
-         'id_bitacora AS ID_BITACORA, ' +
-         'accion AS ACCION, ' +
-         "CONCAT(DATE_FORMAT(fecha,'%d/%m/%Y'),' ',DATE_FORMAT(fecha,'%l:%i:%s %p')) AS FECHA, " +
-         "id_cuenta AS ID_CUENTA, " +
-         "id_usuario AS ID_USUARIO, " +
-         "(SELECT usuario FROM cuentas WHERE cuentas.id_cuenta = bitacora.id_cuenta) AS CUENTA " +
-         'FROM bitacora ' +
-         'WHERE id_usuario = ? ORDER BY fecha DESC';
+      const query = 'CALL pa_bitacora_listado(?)';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
-            resolve(rows);
+            resolve(rows[0]);
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -49,16 +40,14 @@ const obtenerListadoBitacoraXUsuario = ({ id }) => {
 }
 
 // Registrar bitacora
-const registrarBitacora = ({ ACCION, FECHA, ID_CUENTA, ID_USUARIO }) => {
+const registrarBitacora = ({ EVENTO, ACCION, SECCION, FECHA, ID_CUENTA, ID_USUARIO }) => {
    return new Promise((resolve, reject) => {
-      const query = 'INSERT INTO bitacora ' +
-         '(accion,fecha,id_cuenta,id_usuario) ' +
-         'VALUES (?,?,?,?)';
+      const query = 'CALL pa_bitacora_crear(?, ?, ?, ?, ?, ?)';
 
-      mysqlConnection.query(query, [ACCION, FECHA, ID_CUENTA, ID_USUARIO], (err, rows, fields) => {
+      mysqlConnection.query(query, [EVENTO, ACCION, SECCION, FECHA, ID_CUENTA, ID_USUARIO], (err, rows, fields) => {
          if (!err) {
             resolve(
-               { ID: rows.insertId, MENSAJE: "ACCION REGISTRADA" }
+               { ID: rows[0], MENSAJE: "ACCION REGISTRADA" }
             );
          }
          else {

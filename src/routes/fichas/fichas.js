@@ -10,6 +10,7 @@ const querysHistorialO = require('./controllers/querysHistorialOdonto');
 const querysTratamientos = require('./controllers/querysTratamientos');
 const querysFotosFN = require('./controllers/querysFotosFN');
 const querysPagos = require('./controllers/querysPagos');
+const querysPacientes = require('./../pacientes/controllers/querysPacientes');
 
 router.post('/fichas', async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -71,6 +72,11 @@ router.post('/fichas', async (req, res) => {
       req.body.PAGOS[i].ID_FICHA = resultadoFicha.ID;
       const resultadoPago = await querysPagos.registrarPago(req.body.PAGOS[i]);
    }
+
+   // Actualizacion de Saldos - Ficha
+   const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(req.body.FICHA.ID_USUARIO, resultadoFicha.ID);
+   // Actualizavion de Saldos - Pacientes
+   const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(req.body.FICHA.ID_USUARIO, req.body.FICHA.ID_PACIENTE);
 
    res.json({
       ID: resultadoFicha.ID,
