@@ -70,7 +70,7 @@ const actualizarEstado = ({
    return new Promise((resolve, reject) => {
       const query = 'CALL pa_citas_actualizar_realizado(?,?,?)';
 
-      mysqlConnection.query(query, [ID_CITA, ID_USUARIO, REALIZADO], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_USUARIO, ID_CITA, REALIZADO], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
