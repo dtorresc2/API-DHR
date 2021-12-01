@@ -88,7 +88,7 @@ const eliminarCita = ({
    return new Promise((resolve, reject) => {
       const query = 'CALL pa_citas_eliminar(?,?)';
 
-      mysqlConnection.query(query, [ID_CITA, ID_USUARIO], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_USUARIO, ID_CITA], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
