@@ -8,6 +8,11 @@ router.post('/citas/consulta', async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/citas/consulta/avanzado', async (req, res) => {
+   const resultado = await querysCitas.consultaAvanzada(req.body);
+   res.json(resultado);
+});
+
 router.post('/citas/registro', async (req, res) => {
    const resultado = await querysCitas.registrarCita(req.body);
    res.json(resultado);

@@ -2,11 +2,34 @@ const mysqlConnection = require('../../../config/db');
 
 
 // Listado de Citas
-const obtenerListadoCitas = ({ ID_USUARIO, ID_CITA }) => {
+const obtenerListadoCitas = ({
+   ID_USUARIO,
+   ID_CITA
+}) => {
    return new Promise((resolve, reject) => {
       const query = 'CALL pa_citas_listado(?, ?)';
 
       mysqlConnection.query(query, [ID_USUARIO, ID_CITA], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const consultaAvanzada = ({
+   ID_USUARIO,
+   REALIZADO,
+   FECHA_INICAL,
+   FECHA_FINAL
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_citas_consulta_avanzada(?, ?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, REALIZADO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
@@ -104,5 +127,6 @@ module.exports = {
    registrarCita: registrarCita,
    actualizarCita: actualizarCita,
    actualizarEstado: actualizarEstado,
-   eliminarCita: eliminarCita
+   eliminarCita: eliminarCita,
+   consultaAvanzada: consultaAvanzada
 }
