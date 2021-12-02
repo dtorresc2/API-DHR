@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const querysPagos = require('../fichas/controllers/querysPagos');
+const querysFichas = require('../fichas/controllers/querysFichas');
 
 router.post('/pagos', async (req, res) => {
    const resultado = await querysPagos.registrarPago(req.body);
@@ -16,6 +17,7 @@ router.get('/pagos/:id', async (req, res) => {
 router.put('/pagos/:id', async (req, res) => {
    let contador = 0;
    const resultado = await querysPagos.eliminarPagoFicha(req.params);
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
 
    if (resultado.ID != -1) {
       if (req.body.PAGOS.length > 0) {
@@ -25,6 +27,12 @@ router.put('/pagos/:id', async (req, res) => {
             contador++;
             const resultado = await querysPagos.registrarPago(element);
          }
+
+         // Actualizacion de Saldos - Ficha
+         const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+         // Actualizavion de Saldos - Pacientes
+         const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+
          res.json({ MENSAJE: 'PAGOS REGISTRADOS', CUENTA: contador });
       }
       else {

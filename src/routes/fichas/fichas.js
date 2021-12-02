@@ -63,7 +63,7 @@ router.post('/fichas', async (req, res) => {
       req.body.HISTORIAL_FOTOS[i].DESCRIPCION = "Historial Fotografico - Foto #" + (i + 1);
       req.body.HISTORIAL_FOTOS[i].URL = ruta;
       req.body.HISTORIAL_FOTOS[i].NOMBRE = nombre;
-      
+
       const resultadoFoto = await querysFotosFN.registrarFotos(req.body.HISTORIAL_FOTOS[i]);
    }
 
@@ -110,7 +110,19 @@ router.put('/fichas/:id/estado', async (req, res) => {
 });
 
 router.delete('/fichas/:id', async (req, res) => {
+   let contador = 0;
+   let listadoFotos = await querysFotosFN.obtenerListadoFotosFicha(req.params);
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
+   let resultadoS3 = '';
+
+   if (listadoFotos.length > 0) {
+      resultadoS3 = await funcionesS3.eliminarCarpeta(listadoFotos[0].URL);
+   }
+
    const resultado = await querysFichas.eliminarFicha(req.params);
+   // Actualizavion de Saldos - Pacientes
+   const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+
    res.json(resultado);
 });
 

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 
 const querysTratamientos = require('./controllers/querysTratamientos');
+const querysFichas = require('../fichas/controllers/querysFichas');
+const querysHistorialOdonto = require('./controllers/querysHistorialOdonto');
 
 router.post('/tratamientos', async (req, res) => {
    let contador = 0;
@@ -29,6 +31,9 @@ router.get('/tratamientos/:id', async (req, res) => {
 router.put('/tratamientos/:id', async (req, res) => {
    let contador = 0;
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
+   let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologico(req.params);
+
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(resultadoHistorialO.ID_FICHA);
 
    if (resultado.ID != -1) {
       if (req.body.TRATAMIENTOS.length > 0) {
@@ -38,6 +43,12 @@ router.put('/tratamientos/:id', async (req, res) => {
             contador++;
             const resultado = await querysTratamientos.registrarTratamiento(element, contador);
          }
+
+         // Actualizacion de Saldos - Ficha
+         const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+         // Actualizavion de Saldos - Pacientes
+         const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+
          res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
       }
       else {
