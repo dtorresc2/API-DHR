@@ -100,7 +100,15 @@ router.get('/fichas/:id/usuario', async (req, res) => {
 });
 
 router.put('/fichas/:id', async (req, res) => {
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
    const resultadoRegistro = await querysFichas.actualizarFichas(req.params, req.body);
+
+   // Actualizavion de Saldos - Pacientes
+   let resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+   
+   resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
+   resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+
    res.json(resultadoRegistro);
 });
 
