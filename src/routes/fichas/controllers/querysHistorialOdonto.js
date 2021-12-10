@@ -52,7 +52,7 @@ const obtenerHistorialOdontodologico = ({ id }) => {
 }
 
 
-const obtenerHistorialOdontodologicoEspecifico = (id) => {
+const obtenerHistorialOdontodologicoEspecifico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
          "id_historial_odonto AS ID_HISTORIAL_ODONTO, " +
