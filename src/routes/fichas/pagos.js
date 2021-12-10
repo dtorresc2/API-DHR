@@ -30,7 +30,7 @@ router.put('/pagos/:id', async (req, res) => {
          }
 
          // Actualizacion de Saldos - Ficha
-         const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+         const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_FICHA);
          // Actualizavion de Saldos - Pacientes
          const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
 
