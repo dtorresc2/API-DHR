@@ -3,6 +3,7 @@ const router = express.Router();
 
 const querysPagos = require('../fichas/controllers/querysPagos');
 const querysFichas = require('../fichas/controllers/querysFichas');
+const querysPacientes = require('../pacientes/controllers/querysPacientes');
 
 router.post('/pagos', async (req, res) => {
    const resultado = await querysPagos.registrarPago(req.body);
