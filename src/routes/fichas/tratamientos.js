@@ -32,14 +32,10 @@ router.get('/tratamientos/:id', async (req, res) => {
 router.put('/tratamientos/:id', async (req, res) => {
    let contador = 0;
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
-   console.log(resultado);
 
    let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologicoEspecifico(req.params);
-   console.log(resultadoHistorialO);
 
-   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico({id: resultadoHistorialO.ID_FICHA});
-
-   console.log(resultadoFichas);
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico({ id: resultadoHistorialO.ID_FICHA });
 
    if (resultado.ID != -1) {
       if (req.body.TRATAMIENTOS.length > 0) {
@@ -48,12 +44,17 @@ router.put('/tratamientos/:id', async (req, res) => {
          for (let element of arreglo) {
             contador++;
             const resultado = await querysTratamientos.registrarTratamiento(element, contador);
+            console.log(resultado);
          }
 
          // Actualizacion de Saldos - Ficha
          const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+         console.log(resultadoSaldoFicha);
+
          // Actualizavion de Saldos - Pacientes
          const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+         console.log(resultadoSaldoPaciente);
+
 
          res.json({ MENSAJE: 'TRATAMIENTOS REGISTRADOS', CUENTA: contador });
       }
