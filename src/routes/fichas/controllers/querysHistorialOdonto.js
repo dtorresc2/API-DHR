@@ -51,6 +51,28 @@ const obtenerHistorialOdontodologico = ({ id }) => {
    });
 }
 
+
+const obtenerHistorialOdontodologicoEspecifico = (id) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         "id_historial_odonto AS ID_HISTORIAL_ODONTO, " +
+         "dolor AS DOLOR, " +
+         "descripcion_dolor AS DESCRIPCION_DOLOR, " +
+         "gingivitis AS GINGIVITIS, " +
+         'otros AS OTROS, ' +
+         'id_ficha AS ID_FICHA ' +
+         'FROM historial_odonto WHERE id_historial_odonto = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
 const actualizarHistorialOdontogologico = ({ id }, {
    DOLOR, DESCRIPCION_DOLOR, GINGIVITIS, OTROS,
 }) => {
@@ -94,6 +116,7 @@ const eliminarHistorialOdontodologico = ({ id }) => {
 module.exports = {
    registrarHistorialOdontodologico: registrarHistorialOdontodologico,
    obtenerHistorialOdontodologico: obtenerHistorialOdontodologico,
+   obtenerHistorialOdontodologicoEspecifico: obtenerHistorialOdontodologicoEspecifico,
    actualizarHistorialOdontogologico: actualizarHistorialOdontogologico,
    eliminarHistorialOdontodologico: eliminarHistorialOdontodologico
 }

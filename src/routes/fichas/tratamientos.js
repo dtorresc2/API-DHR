@@ -31,7 +31,7 @@ router.get('/tratamientos/:id', async (req, res) => {
 router.put('/tratamientos/:id', async (req, res) => {
    let contador = 0;
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
-   let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologico(req.params);
+   let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologicoEspecifico(req.params);
 
    let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(resultadoHistorialO.ID_FICHA);
 
