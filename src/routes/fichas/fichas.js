@@ -54,15 +54,17 @@ router.post('/fichas', async (req, res) => {
       // RegistrarImagen
       let ruta = "Usuarios/" + req.body.FICHA.ID_USUARIO + "/FN/FN-" + resultadoFicha.ID;
       let nombre = "HF-" + (i + 1);
+      let nombreArchivo = `${ruta}/${nombre}.jpg`
+      
       // req.body.URL = nombre;
 
       const buffer = Buffer.from(req.body.HISTORIAL_FOTOS[i].FOTO, 'base64');
-      const resultadoURL = await funcionesS3.imageUpload(`${ruta}/${nombre}.jpg`, buffer);
+      const resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
 
       // Ajustar Datos
       req.body.HISTORIAL_FOTOS[i].DESCRIPCION = "Historial Fotografico - Foto #" + (i + 1);
       req.body.HISTORIAL_FOTOS[i].URL = ruta;
-      req.body.HISTORIAL_FOTOS[i].NOMBRE = nombre;
+      req.body.HISTORIAL_FOTOS[i].NOMBRE = nombre + '.jpg';
 
       const resultadoFoto = await querysFotosFN.registrarFotos(req.body.HISTORIAL_FOTOS[i]);
    }
