@@ -4,6 +4,7 @@ const router = express.Router();
 const querysTratamientos = require('./controllers/querysTratamientos');
 const querysFichas = require('../fichas/controllers/querysFichas');
 const querysHistorialOdonto = require('./controllers/querysHistorialOdonto');
+const querysPacientes = require('../pacientes/controllers/querysPacientes');
 
 router.post('/tratamientos', async (req, res) => {
    let contador = 0;
@@ -33,7 +34,7 @@ router.put('/tratamientos/:id', async (req, res) => {
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
    let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologicoEspecifico(req.params);
 
-   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(resultadoHistorialO.ID_FICHA);
+   let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico({id: resultadoHistorialO.ID_FICHA});
 
    if (resultado.ID != -1) {
       if (req.body.TRATAMIENTOS.length > 0) {
