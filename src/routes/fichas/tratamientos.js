@@ -37,6 +37,8 @@ router.put('/tratamientos/:id', async (req, res) => {
 
    let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico({ id: resultadoHistorialO.ID_FICHA });
 
+   console.log(req.body);
+
    if (resultado.ID != -1) {
       if (req.body.TRATAMIENTOS.length > 0) {
          let arreglo = req.body.TRATAMIENTOS;
@@ -44,7 +46,6 @@ router.put('/tratamientos/:id', async (req, res) => {
          for (let element of arreglo) {
             contador++;
             const resultado = await querysTratamientos.registrarTratamiento(element, contador);
-            console.log(resultado);
          }
 
          // Actualizacion de Saldos - Ficha
