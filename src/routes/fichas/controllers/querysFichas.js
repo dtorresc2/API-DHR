@@ -50,19 +50,21 @@ const obtenerListadoFichas = () => {
 const obtenerListadoFichasEspecifico = ({ id }) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
-         "id_ficha AS ID_FICHA, " +
-         "codigo_interno AS CODIGO_INTERNO, " +
-         "DATE_FORMAT(fecha,'%d/%m/%Y') AS FECHA, " +
-         'medico AS MEDICO, ' +
-         'motivo AS MOTIVO, ' +
-         'referente AS REFERENTE, ' +
-         'estado AS ESTADO, ' +
-         'debe AS DEBE, ' +
-         'haber AS HABER, ' +
-         'saldo AS SALDO, ' +
-         'id_paciente AS ID_PACIENTE, ' +
-         'id_usuario AS ID_USUARIO ' +
-         'FROM fichas WHERE id_ficha = ?';
+         " f.id_ficha AS ID_FICHA, " +
+         " f.codigo_interno AS CODIGO_INTERNO, " +
+         " DATE_FORMAT(f.fecha, '%d/%m/%Y') AS FECHA, " +
+         ' f.motivo AS MOTIVO, ' +
+         ' f.estado AS ESTADO, ' +
+         ' IFNULL(FORMAT(f.debe, 2), 0) AS DEBE, ' +
+         ' IFNULL(FORMAT(f.haber, 2), 0) AS HABER, ' +
+         ' IFNULL(FORMAT(f.saldo, 2), 0) AS SALDO, ' +
+         ' f.id_paciente AS ID_PACIENTE, ' +
+         ' p.nombre AS NOMBRE, ' +
+         ' p.edad AS EDAD_PACIENTE, ' +
+         ' f.id_usuario AS ID_USUARIO ' +
+         'FROM fichas f ' +
+         ' LEFT JOIN pacientes p ON f.id_paciente = p.id_paciente ' +
+         'WHERE f.id_ficha = ? ';
 
       mysqlConnection.query(query, [id], (err, rows, fields) => {
          if (!err) {
@@ -107,7 +109,7 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
 
 const obtenerConteoFichas = (id) => {
    return new Promise((resolve, reject) => {
-      const query = 'SELECT ' + 
+      const query = 'SELECT ' +
          'IFNULL(MAX(codigo_interno), 0) + 1 AS CONTEO ' +
          'FROM fichas ' +
          'WHERE id_usuario = ?';
