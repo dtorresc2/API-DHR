@@ -32,9 +32,14 @@ router.get('/tratamientos/:id', async (req, res) => {
 router.put('/tratamientos/:id', async (req, res) => {
    let contador = 0;
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
+   console.log(resultado);
+
    let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologicoEspecifico(req.params);
+   console.log(resultadoHistorialO);
 
    let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico({id: resultadoHistorialO.ID_FICHA});
+
+   console.log(resultadoFichas);
 
    if (resultado.ID != -1) {
       if (req.body.TRATAMIENTOS.length > 0) {
