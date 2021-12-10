@@ -52,7 +52,7 @@ router.post('/fichas', async (req, res) => {
       req.body.HISTORIAL_FOTOS[i].ID_FICHA = resultadoFicha.ID;
 
       // RegistrarImagen
-      let ruta = req.body.FICHA.ID_USUARIO + "/FN/FN-" + resultadoFicha.ID;
+      let ruta = "Usuarios/" + req.body.FICHA.ID_USUARIO + "/FN/FN-" + resultadoFicha.ID;
       let nombre = "HF-" + (i + 1);
       // req.body.URL = nombre;
 
