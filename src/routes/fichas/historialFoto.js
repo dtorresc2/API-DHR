@@ -36,7 +36,7 @@ router.put('/fotos/:id', async (req, res) => {
             contador++;
 
             // RegistrarImagen
-            let ruta = resultadoFichas.ID_USUARIO + "/FN-" + element.ID_FICHA;
+            let ruta = resultadoFichas.ID_USUARIO + "/FN/FN-" + element.ID_FICHA;
             let nombre = "HF-" + (contador);
             let nombreArchivo = `${ruta}/${nombre}.jpg`
 

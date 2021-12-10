@@ -27,7 +27,7 @@ router.post('/usuarios', async (req, res) => {
 });
 
 router.put('/usuarios/:id', async (req, res) => {
-   var nombre = "imagen-" + req.params.id;
+   let nombre = req.params.id + "/perfil/imagen_perfil";
    req.body.URL = nombre;
    const resultado = await querysUsuarios.actualizarUsuario(req.params, req.body);
    if (req.body.buffer == '0') {
@@ -38,6 +38,11 @@ router.put('/usuarios/:id', async (req, res) => {
       const resultadoURL = await funcionesS3.imageUpload(`${nombre}.jpg`, buffer);
       res.json({ ID: resultado.ID, MENSAJE: resultado.MENSAJE, URL: resultadoURL });
    }
+});
+
+router.delete('/usuarios/:id', async (req, res) => {
+   const resultado = await querysUsuarios.eliminarUsuario(req.params);
+   res.json(resultado);
 });
 
 // Funcion S3 prueba
@@ -51,9 +56,5 @@ router.get('/eliminarS3', async (req, res) => {
    res.json({ res: resultadoS3 });
 });
 
-router.delete('/usuarios/:id', async (req, res) => {
-   const resultado = await querysUsuarios.eliminarUsuario(req.params);
-   res.json(resultado);
-});
 
 module.exports = router;
