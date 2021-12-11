@@ -27,7 +27,7 @@ router.post('/usuarios', async (req, res) => {
 });
 
 router.put('/usuarios/:id', async (req, res) => {
-   let nombre = req.params.id + "/perfil/imagen_perfil";
+   let nombre = "Usuarios/" + req.params.id + "/Perfil/imagen_perfil";
    req.body.URL = nombre;
    const resultado = await querysUsuarios.actualizarUsuario(req.params, req.body);
    if (req.body.buffer == '0') {
