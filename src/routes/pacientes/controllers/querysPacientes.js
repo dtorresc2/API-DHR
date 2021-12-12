@@ -45,25 +45,14 @@ const obtenerListadoPacientes = () => {
 }
 
 // Listado de Pacientes
-const obtenerPacienteEspecifico = ({ id }) => {
+const obtenerPacienteEspecifico = ({
+    ID_USUARIO,
+    ID_PACIENTE
+}) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT ' +
-            'id_paciente AS ID_PACIENTE, ' +
-            'nombre AS NOMBRE, ' +
-            'edad AS EDAD, ' +
-            'ocupacion AS OCUPACION, ' +
-            'sexo AS SEXO, ' +
-            'tel AS TELEFONO, ' +
-            "DATE_FORMAT(fecha_nacimiento,'%d/%m/%Y') AS FECHA_NACIMIENTO, " +
-            'dpi AS DPI, ' +
-            'debe AS DEBE, ' +
-            'haber AS HABER, ' +
-            'saldo AS SALDO, ' +
-            'estado AS ESTADO ' +
-            'FROM pacientes ' +
-            'WHERE id_paciente = ? ';
+        const query = 'CALL pa_pacientes_listado(?, ?)';
 
-        mysqlConnection.query(query, [id], (err, rows, fields) => {
+        mysqlConnection.query(query, [ID_USUARIO, ID_PACIENTE], (err, rows, fields) => {
             if (!err) {
                 resolve(rows[0]);
             }
@@ -75,27 +64,15 @@ const obtenerPacienteEspecifico = ({ id }) => {
 }
 
 // Listado de Pacientes
-const obtenerListadoPacientesPorUsuario = ({ id }) => {
+const obtenerListadoPacientesPorUsuario = ({
+    ID_USUARIO
+}) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT ' +
-            'id_paciente AS ID_PACIENTE, ' +
-            'nombre AS NOMBRE, ' +
-            'edad AS EDAD, ' +
-            'ocupacion AS OCUPACION, ' +
-            'sexo AS SEXO, ' +
-            'tel AS TELEFONO, ' +
-            "DATE_FORMAT(fecha_nacimiento,'%d/%m/%Y') AS FECHA_NACIMIENTO, " +
-            'dpi AS DPI, ' +
-            'debe AS DEBE, ' +
-            'haber AS HABER, ' +
-            'saldo AS SALDO, ' +
-            'estado AS ESTADO ' +
-            'FROM pacientes ' +
-            'WHERE id_usuario = ? ';
+        const query = 'CALL pa_pacientes_listado(?, 0)';
 
-        mysqlConnection.query(query, [id], (err, rows, fields) => {
+        mysqlConnection.query(query, [ID_USUARIO], (err, rows, fields) => {
             if (!err) {
-                resolve(rows);
+                resolve(rows[0]);
             }
             else {
                 reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
@@ -172,20 +149,20 @@ const actualizarPaciente = ({ id }, { NOMBRE, EDAD, OCUPACION, SEXO, TELEFONO, F
 
 const actualizarEstadoPaciente = ({ id }, { ESTADO }) => {
     return new Promise((resolve, reject) => {
-       const query = 'UPDATE pacientes SET ' +
-          'estado = ? ' +
-          'WHERE id_paciente = ?';
- 
-       mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
-          if (!err) {
-             resolve({ ID: id, MENSAJE: 'PACIENTE ACTUALIZADO' });
-          }
-          else {
-             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
-          }
-       });
+        const query = 'UPDATE pacientes SET ' +
+            'estado = ? ' +
+            'WHERE id_paciente = ?';
+
+        mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
+            if (!err) {
+                resolve({ ID: id, MENSAJE: 'PACIENTE ACTUALIZADO' });
+            }
+            else {
+                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+            }
+        });
     });
- }
+}
 
 // Eliminar usuarios
 const eliminarPaciente = ({ id }) => {
@@ -207,18 +184,18 @@ const eliminarPaciente = ({ id }) => {
 // Actualizar Saldo Paciente
 const actualizarSaldoPaciente = (ID_USUARIO, ID_PACIENTE) => {
     return new Promise((resolve, reject) => {
-       const query = 'CALL pa_pacientes_saldos_actualiza(?,?)';
- 
-       mysqlConnection.query(query, [ID_USUARIO, ID_PACIENTE], (err, rows, fields) => {
-          if (!err) {
-             resolve({ ID: ID_PACIENTE, MENSAJE: 'SALDO ACTUALIZADO' });
-          }
-          else {
-             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
-          }
-       });
+        const query = 'CALL pa_pacientes_saldos_actualiza(?,?)';
+
+        mysqlConnection.query(query, [ID_USUARIO, ID_PACIENTE], (err, rows, fields) => {
+            if (!err) {
+                resolve({ ID: ID_PACIENTE, MENSAJE: 'SALDO ACTUALIZADO' });
+            }
+            else {
+                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+            }
+        });
     });
- }
+}
 
 module.exports = {
     obtenerVersionMYSQL: obtenerVersionMYSQL,
