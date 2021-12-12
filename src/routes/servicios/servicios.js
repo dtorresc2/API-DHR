@@ -4,7 +4,7 @@ const router = express.Router();
 const querysServicios = require('./controllers/querysServicios');
 const guardia = require('./../../config/guardia');
 
-router.post('/servicios', async (req, res) => {
+router.post('/servicios', guardia, async (req, res) => {
    const resultado = await querysServicios.registrarServicio(req.body);
    res.json(resultado);
 });
@@ -14,17 +14,17 @@ router.post('/servicios/listado', guardia, async (req, res) => {
    res.json(resultado);
 });
 
-router.put('/servicios/:id', async (req, res) => {
+router.put('/servicios/:id', guardia, async (req, res) => {
    const resultadoRegistro = await querysServicios.actualizarServicio(req.params, req.body);
    res.json(resultadoRegistro);
 });
 
-router.put('/servicios/:id/estado', async (req, res) => {
+router.put('/servicios/:id/estado', guardia, async (req, res) => {
    const resultadoRegistro = await querysServicios.actualizarEstadoServicio(req.params, req.body);
    res.json(resultadoRegistro);
 });
 
-router.delete('/servicios/:id', async (req, res) => {
+router.delete('/servicios/:id', guardia, async (req, res) => {
    const resultado = await querysServicios.eliminarServicio(req.params);
    res.json(resultado);
 });

@@ -3,30 +3,31 @@ const router = express.Router();
 
 const querysUsuarios = require('../usuarios/controllers/querysUsuarios');
 const funcionesS3 = require('../../config/s3');
+const guardia = require('./../../config/guardia');
 
-router.get('/usuarios', async (req, res) => {
+router.get('/usuarios', guardia, async (req, res) => {
    const listadoUsuarios = await querysUsuarios.obtenerListadoUsuarios();
    res.json(listadoUsuarios);
 });
 
-router.get('/usuarios/:id', async (req, res) => {
+router.get('/usuarios/:id', guardia, async (req, res) => {
    const listadoUsuarios = await querysUsuarios.obtenerUsuarioEspecifico(req.params);
    res.json(listadoUsuarios);
 });
 
-router.get('/usuarios/:id/codigo', async (req, res) => {
+router.get('/usuarios/:id/codigo', guardia, async (req, res) => {
    const resultado = await querysUsuarios.obtenerIdUsuario(req.params.id);
    res.json(resultado);
 });
 
-router.post('/usuarios', async (req, res) => {
+router.post('/usuarios', guardia, async (req, res) => {
    const resultadoConteo = await querysUsuarios.obtenerConteoUsuarios();
    req.body.CODIGO = resultadoConteo.CONTEO + 1000;
    const resultadoRegistro = await querysUsuarios.registrarUsuario(req.body);
    res.json(resultadoRegistro);
 });
 
-router.put('/usuarios/:id', async (req, res) => {
+router.put('/usuarios/:id', guardia, async (req, res) => {
    let nombre = "Usuarios/" + req.params.id + "/Perfil/imagen_perfil";
    req.body.URL = nombre;
    const resultado = await querysUsuarios.actualizarUsuario(req.params, req.body);
@@ -40,7 +41,7 @@ router.put('/usuarios/:id', async (req, res) => {
    }
 });
 
-router.delete('/usuarios/:id', async (req, res) => {
+router.delete('/usuarios/:id', guardia, async (req, res) => {
    const resultado = await querysUsuarios.eliminarUsuario(req.params);
    res.json(resultado);
 });
