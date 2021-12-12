@@ -12,7 +12,7 @@ const rutasProtegidas = (req, res, next) => {
       return res.status(403).json({ MENSAJE: 'EL TOKEN ES REQUERIDO' });
    }
    try {
-      const decoded = jwt.verify(token, process.env.S3_PUBLIC,);
+      const decoded = jwt.verify(token, process.env.LLAVE_JWT);
       req.user = decoded;
    } catch (err) {
       return res.status(401).json({ MENSAJE: 'TOKEN INVALIDO' });

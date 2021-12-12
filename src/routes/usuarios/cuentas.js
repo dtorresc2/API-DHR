@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
 
 const querysCuentas = require('../usuarios/controllers/querysCuentas');
 const querysUsuarios = require('../usuarios/controllers/querysUsuarios');
+// Configuracion archivo - variables de entorno
+const envFile = "./src/config/.env";
+dotenv.config({ path: envFile });
 
 router.get('/cuentas', async (req, res) => {
    const listadoCuentas = await querysCuentas.obtenerListadoCuentas();
@@ -47,11 +52,18 @@ router.post('/cuentas/login', async (req, res) => {
          const resultadoExistencia = await querysCuentas.obtenerCuentaSesion(req.body);
          const resultadoDesencriptar = await querysCuentas.desencriptarPassowrd(PASSWORD, resultadoExistencia.PASSWORD);
 
+         const payload = {
+            check:  true
+         };
+         
+         const jwtRespuesta = jwt.sign(payload, process.env.LLAVE_JWT);
+         
          res.json({
             ID_USUARIO : resultadoID.ID_USUARIO,
             ID_CUENTA: resultadoExistencia.ID_CUENTA,
             MENSAJE: resultadoDesencriptar.MENSAJE,
-            ESTADO: resultadoDesencriptar.ESTADO
+            ESTADO: resultadoDesencriptar.ESTADO,
+            TOKEN: jwtRespuesta
          });
       }
       else {
