@@ -23,38 +23,14 @@ const registrarPieza = ({ NUMERO, NOMBRE, ESTADO, ID_USUARIO }) => {
 }
 
 // Listado de Piezas
-const obtenerListadoPiezas = ({ id }) => {
+const obtenerListadoPiezas = ({
+   ID_USUARIO,
+   ID_PIEZA
+}) => {
    return new Promise((resolve, reject) => {
-      const query = 'SELECT ' +
-         "id_pieza AS ID_PIEZA, " +
-         "numero AS NUMERO, " +
-         'nombre AS NOMBRE, ' +
-         'estado AS ESTADO, ' +
-         'id_usuario AS ID_USUARIO ' +
-         'FROM piezas WHERE id_usuario = ?';
+      const query = 'CALL pa_piezas_listado(?, ?)';
 
-      mysqlConnection.query(query, [id], (err, rows, fields) => {
-         if (!err) {
-            resolve(rows);
-         }
-         else {
-            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
-         }
-      });
-   });
-}
-
-const obtenerPiezaEspecifica = ({ id }) => {
-   return new Promise((resolve, reject) => {
-      const query = 'SELECT ' +
-         "id_pieza AS ID_PIEZA, " +
-         "numero AS NUMERO, " +
-         'nombre AS NOMBRE, ' +
-         'estado AS ESTADO, ' +
-         'id_usuario AS ID_USUARIO ' +
-         'FROM piezas WHERE id_pieza = ?';
-
-      mysqlConnection.query(query, [id], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_USUARIO, ID_PIEZA], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
@@ -122,7 +98,6 @@ const eliminarPieza = ({ id }) => {
 module.exports = {
    registrarPieza: registrarPieza,
    obtenerListadoPiezas: obtenerListadoPiezas,
-   obtenerPiezaEspecifica: obtenerPiezaEspecifica,
    actualizarPiezas: actualizarPiezas,
    actualizarEstadoPieza: actualizarEstadoPieza,
    eliminarPieza: eliminarPieza

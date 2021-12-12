@@ -15,37 +15,9 @@ const obtenerVersionMYSQL = () => {
     });
 }
 
-// Listado de Pacientes
-const obtenerListadoPacientes = () => {
-    return new Promise((resolve, reject) => {
-        const query = 'SELECT ' +
-            'id_paciente AS ID_PACIENTE, ' +
-            'nombre AS NOMBRE, ' +
-            'edad AS EDAD, ' +
-            'ocupacion AS OCUPACION, ' +
-            'sexo AS SEXO, ' +
-            'tel AS TELEFONO, ' +
-            "DATE_FORMAT(fecha_nacimiento,'%d/%m/%Y') AS FECHA_NACIMIENTO, " +
-            'dpi AS DPI, ' +
-            'debe AS DEBE, ' +
-            'haber AS HABER, ' +
-            'saldo AS SALDO, ' +
-            'estado AS ESTADO ' +
-            'FROM pacientes';
-
-        mysqlConnection.query(query, (err, rows, fields) => {
-            if (!err) {
-                resolve(rows);
-            }
-            else {
-                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
-            }
-        });
-    });
-}
 
 // Listado de Pacientes
-const obtenerPacienteEspecifico = ({
+const obtenerListadoPacientes = ({
     ID_USUARIO,
     ID_PACIENTE
 }) => {
@@ -53,24 +25,6 @@ const obtenerPacienteEspecifico = ({
         const query = 'CALL pa_pacientes_listado(?, ?)';
 
         mysqlConnection.query(query, [ID_USUARIO, ID_PACIENTE], (err, rows, fields) => {
-            if (!err) {
-                resolve(rows[0]);
-            }
-            else {
-                reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
-            }
-        });
-    });
-}
-
-// Listado de Pacientes
-const obtenerListadoPacientesPorUsuario = ({
-    ID_USUARIO
-}) => {
-    return new Promise((resolve, reject) => {
-        const query = 'CALL pa_pacientes_listado(?, 0)';
-
-        mysqlConnection.query(query, [ID_USUARIO], (err, rows, fields) => {
             if (!err) {
                 resolve(rows[0]);
             }
@@ -200,8 +154,6 @@ const actualizarSaldoPaciente = (ID_USUARIO, ID_PACIENTE) => {
 module.exports = {
     obtenerVersionMYSQL: obtenerVersionMYSQL,
     obtenerListadoPacientes: obtenerListadoPacientes,
-    obtenerPacienteEspecifico: obtenerPacienteEspecifico,
-    obtenerListadoPacientesPorUsuario: obtenerListadoPacientesPorUsuario,
     registrarPaciente: registrarPaciente,
     comprobarPaciente: comprobarPaciente,
     actualizarPaciente: actualizarPaciente,

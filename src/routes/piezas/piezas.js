@@ -8,13 +8,8 @@ router.post('/piezas', async (req, res) => {
    res.json(resultado);
 });
 
-router.get('/piezas/:id/usuario', async (req, res) => {
-   const resultado = await querysPiezas.obtenerListadoPiezas(req.params);
-   res.json(resultado);
-});
-
-router.get('/piezas/:id', async (req, res) => {
-   const resultado = await querysPiezas.obtenerPiezaEspecifica(req.params);
+router.post('/piezas/listado', async (req, res) => {
+   const resultado = await querysPiezas.obtenerListadoPiezas(req.body);
    res.json(resultado);
 });
 

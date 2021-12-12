@@ -8,13 +8,8 @@ router.get('/version', async (req, res) => {
    res.json(version);
 });
 
-router.post('/pacientes/listado/especifico', async (req, res) => {
-   const resultado = await querysPacientes.obtenerPacienteEspecifico(req.body);
-   res.json(resultado);
-});
-
 router.post('/pacientes/listado', async (req, res) => {
-   const resultado = await querysPacientes.obtenerListadoPacientesPorUsuario(req.body);
+   const resultado = await querysPacientes.obtenerListadoPacientes(req.body);
    res.json(resultado);
 });
 
