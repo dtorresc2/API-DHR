@@ -19,6 +19,11 @@ router.put('/piezas/:id', guardia, async (req, res) => {
    res.json(resultadoRegistro);
 });
 
+router.post('/piezas/actualiza/estado', guardia, async (req, res) => {
+   const resultadoRegistro = await querysPiezas.actualizarEstadoPieza(req.body);
+   res.json(resultadoRegistro);
+});
+
 router.delete('/piezas/:id', guardia, async (req, res) => {
    const resultado = await querysPiezas.eliminarPieza(req.params);
    res.json(resultado);

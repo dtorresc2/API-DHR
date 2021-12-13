@@ -61,15 +61,18 @@ const actualizarPiezas = ({ id }, { NUMERO, NOMBRE, ESTADO }) => {
    });
 }
 
-const actualizarEstadoPieza = ({ id }, { ESTADO }) => {
+const actualizarEstadoPieza = ({ 
+   ID_PIEZA, 
+   ESTADO 
+}) => {
    return new Promise((resolve, reject) => {
       const query = 'UPDATE piezas SET ' +
          'estado = ? ' +
          'WHERE id_pieza = ?';
 
-      mysqlConnection.query(query, [ESTADO, id], (err, rows, fields) => {
+      mysqlConnection.query(query, [ESTADO, ID_PIEZA], (err, rows, fields) => {
          if (!err) {
-            resolve({ ID: id, MENSAJE: 'PIEZA ACTUALIZADA' });
+            resolve({ ID: ID_PIEZA, MENSAJE: 'PIEZA - ESTADO ACTUALIZADO' });
          }
          else {
             reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
