@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const moment = require('moment-timezone');
 const funcionesS3 = require('./../../config/s3');
+const guardia = require('./../../config/guardia');
 
 const querysFichas = require('../fichas/controllers/querysFichas');
 const querysHistorialM = require('./controllers/querysHistorialMed');
@@ -12,7 +13,7 @@ const querysFotosFN = require('./controllers/querysFotosFN');
 const querysPagos = require('./controllers/querysPagos');
 const querysPacientes = require('./../pacientes/controllers/querysPacientes');
 
-router.post('/fichas', async (req, res) => {
+router.post('/fichas', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
    req.body.FICHA.FECHA = fechaMoment;
 
@@ -86,22 +87,22 @@ router.post('/fichas', async (req, res) => {
    });
 });
 
-router.get('/fichas', async (req, res) => {
+router.get('/fichas', guardia, async (req, res) => {
    const resultado = await querysFichas.obtenerListadoFichas();
    res.json(resultado);
 });
 
-router.get('/fichas/:id', async (req, res) => {
+router.get('/fichas/:id', guardia, async (req, res) => {
    const resultado = await querysFichas.obtenerListadoFichasEspecifico(req.params);
    res.json(resultado);
 });
 
-router.get('/fichas/:id/usuario', async (req, res) => {
+router.get('/fichas/:id/usuario', guardia, async (req, res) => {
    const resultado = await querysFichas.obtenerListadoFichasXUsuario(req.params);
    res.json(resultado);
 });
 
-router.put('/fichas/:id', async (req, res) => {
+router.put('/fichas/:id', guardia, async (req, res) => {
    let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
    const resultadoRegistro = await querysFichas.actualizarFichas(req.params, req.body);
 
@@ -114,12 +115,12 @@ router.put('/fichas/:id', async (req, res) => {
    res.json(resultadoRegistro);
 });
 
-router.put('/fichas/:id/estado', async (req, res) => {
+router.put('/fichas/:id/estado', guardia, async (req, res) => {
    const resultadoRegistro = await querysFichas.actualizarEstadoFicha(req.params, req.body);
    res.json(resultadoRegistro);
 });
 
-router.delete('/fichas/:id', async (req, res) => {
+router.delete('/fichas/:id', guardia, async (req, res) => {
    let contador = 0;
    let listadoFotos = await querysFotosFN.obtenerListadoFotosFicha(req.params);
    let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);

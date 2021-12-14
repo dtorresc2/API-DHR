@@ -5,8 +5,9 @@ const querysTratamientos = require('./controllers/querysTratamientos');
 const querysFichas = require('../fichas/controllers/querysFichas');
 const querysHistorialOdonto = require('./controllers/querysHistorialOdonto');
 const querysPacientes = require('../pacientes/controllers/querysPacientes');
+const guardia = require('./../../config/guardia');
 
-router.post('/tratamientos', async (req, res) => {
+router.post('/tratamientos', guardia, async (req, res) => {
    let contador = 0;
 
    if (req.body.TRATAMIENTOS.length > 0) {
@@ -24,12 +25,12 @@ router.post('/tratamientos', async (req, res) => {
    }
 });
 
-router.get('/tratamientos/:id', async (req, res) => {
+router.get('/tratamientos/:id', guardia, async (req, res) => {
    const resultado = await querysTratamientos.obtenerTratamientos(req.params);
    res.json(resultado);
 });
 
-router.put('/tratamientos/:id', async (req, res) => {
+router.put('/tratamientos/:id', guardia, async (req, res) => {
    let contador = 0;
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
    let resultadoHistorialO = await querysHistorialOdonto.obtenerHistorialOdontodologicoEspecifico(req.params);
@@ -60,7 +61,7 @@ router.put('/tratamientos/:id', async (req, res) => {
    }
 });
 
-router.delete('/tratamientos/:id', async (req, res) => {
+router.delete('/tratamientos/:id', guardia, async (req, res) => {
    const resultado = await querysTratamientos.eliminarTratamientos(req.params);
    res.json(resultado);
 });

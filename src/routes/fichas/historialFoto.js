@@ -4,20 +4,19 @@ const router = express.Router();
 const querysFotosFN = require('./controllers/querysFotosFN');
 const querysFichas = require('./controllers/querysFichas');
 const funcionesS3 = require('./../../config/s3');
-// const { CostExplorer } = require('aws-sdk');
+const guardia = require('./../../config/guardia');
 
-
-router.post('/fotos', async (req, res) => {
+router.post('/fotos', guardia, async (req, res) => {
    const resultado = await querysFotosFN.registrarFotos(req.body);
    res.json(resultado);
 });
 
-router.get('/fotos/:id', async (req, res) => {
+router.get('/fotos/:id', guardia, async (req, res) => {
    const resultado = await querysFotosFN.obtenerListadoFotosFicha(req.params);
    res.json(resultado);
 });
 
-router.put('/fotos/:id', async (req, res) => {
+router.put('/fotos/:id', guardia, async (req, res) => {
    let contador = 0;
    let listadoFotos = await querysFotosFN.obtenerListadoFotosFicha(req.params);
    let resultadoFichas = await querysFichas.obtenerListadoFichasEspecifico(req.params);
@@ -61,7 +60,7 @@ router.put('/fotos/:id', async (req, res) => {
    }
 });
 
-router.delete('/pagos/:id/ficha', async (req, res) => {
+router.delete('/pagos/:id/ficha', guardia, async (req, res) => {
    const resultado = await querysFotosFN.eliminarFotosFicha(req.params);
    res.json(resultado);
 });
