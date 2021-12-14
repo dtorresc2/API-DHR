@@ -3,18 +3,19 @@ const router = express.Router();
 const moment = require('moment-timezone');
 
 const querysBitacora = require('../bitacora/controllers/querysBitacoras');
+const guardia = require('./../../config/guardia');
 
 router.get('/bitacora', async (req, res) => {
    const resultado = await querysBitacora.obtenerListadoBitacora();
    res.json(resultado);
 });
 
-router.get('/bitacora/:id', async (req, res) => {
+router.get('/bitacora/:id', guardia, async (req, res) => {
    const resultado = await querysBitacora.obtenerListadoBitacoraXUsuario(req.params);
    res.json(resultado);
 });
 
-router.post('/bitacora', async (req, res) => {
+router.post('/bitacora', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY-MM-DD HH:mm:ss');
    req.body.FECHA = fechaMoment;
 
