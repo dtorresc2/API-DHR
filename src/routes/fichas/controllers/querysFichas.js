@@ -55,6 +55,7 @@ const obtenerListadoFichasEspecifico = ({ id }) => {
          " DATE_FORMAT(f.fecha, '%d/%m/%Y') AS FECHA, " +
          ' f.motivo AS MOTIVO, ' +
          ' f.estado AS ESTADO, ' +
+         ' f.medico AS MEDICO, ' +
          ' IFNULL(FORMAT(f.debe, 2), 0) AS DEBE, ' +
          ' IFNULL(FORMAT(f.haber, 2), 0) AS HABER, ' +
          ' IFNULL(FORMAT(f.saldo, 2), 0) AS SALDO, ' +
