@@ -23,6 +23,25 @@ const obtenerListadoBitacora = () => {
    });
 }
 
+const obtenerBitacoraFiltrada = ({
+   ID_USUARIO,
+   FECHA_INICAL,
+   FECHA_FINAL
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_bitacora_listado_filtrado(?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 // Listado de Bitacora
 const obtenerListadoBitacoraXUsuario = ({ id }) => {
    return new Promise((resolve, reject) => {
@@ -62,5 +81,6 @@ const registrarBitacora = ({ EVENTO, ACCION, SECCION, FECHA, ID_CUENTA, ID_USUAR
 module.exports = {
    obtenerListadoBitacora: obtenerListadoBitacora,
    registrarBitacora: registrarBitacora,
-   obtenerListadoBitacoraXUsuario: obtenerListadoBitacoraXUsuario
+   obtenerListadoBitacoraXUsuario: obtenerListadoBitacoraXUsuario,
+   obtenerBitacoraFiltrada: obtenerBitacoraFiltrada
 }

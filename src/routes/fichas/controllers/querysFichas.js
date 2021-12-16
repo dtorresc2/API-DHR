@@ -109,6 +109,25 @@ const obtenerListadoFichasXUsuario = ({ id }) => {
    });
 }
 
+const obtenerListadoFichasFiltrado = ({
+   ID_USUARIO,
+   FECHA_INICAL,
+   FECHA_FINAL
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_fichas_listado_filtrado(?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 const obtenerConteoFichas = (id) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
@@ -204,6 +223,7 @@ module.exports = {
    obtenerListadoFichasEspecifico: obtenerListadoFichasEspecifico,
    obtenerConteoFichas: obtenerConteoFichas,
    obtenerListadoFichasXUsuario: obtenerListadoFichasXUsuario,
+   obtenerListadoFichasFiltrado: obtenerListadoFichasFiltrado,
    actualizarFichas: actualizarFichas,
    actualizarEstadoFicha: actualizarEstadoFicha,
    eliminarFicha: eliminarFicha,

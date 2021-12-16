@@ -40,6 +40,26 @@ const consultaAvanzada = ({
    });
 }
 
+// Listado Filtrado
+const obtenerListadoCitasFiltrado = ({
+   ID_USUARIO,
+   FECHA_INICAL,
+   FECHA_FINAL
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_citas_listado_filtrado(?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 // Registro de Citas
 const registrarCita = ({
    DESCRIPCION,
@@ -124,6 +144,7 @@ const eliminarCita = ({
 
 module.exports = {
    obtenerListadoCitas: obtenerListadoCitas,
+   obtenerListadoCitasFiltrado: obtenerListadoCitasFiltrado,
    registrarCita: registrarCita,
    actualizarCita: actualizarCita,
    actualizarEstado: actualizarEstado,
