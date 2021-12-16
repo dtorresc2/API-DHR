@@ -25,13 +25,13 @@ const obtenerListadoBitacora = () => {
 
 const obtenerBitacoraFiltrada = ({
    ID_USUARIO,
-   FECHA_INICAL,
+   FECHA_INICIAL,
    FECHA_FINAL
 }) => {
    return new Promise((resolve, reject) => {
       const query = 'CALL pa_bitacora_listado_filtrado(?, ?, ?)';
 
-      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICIAL, FECHA_FINAL], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }

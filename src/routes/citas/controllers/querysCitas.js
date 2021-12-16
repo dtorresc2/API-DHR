@@ -23,7 +23,7 @@ const obtenerListadoCitas = ({
 const consultaAvanzada = ({
    ID_USUARIO,
    REALIZADO,
-   FECHA_INICAL,
+   FECHA_INICIAL,
    FECHA_FINAL
 }) => {
    return new Promise((resolve, reject) => {
@@ -43,13 +43,13 @@ const consultaAvanzada = ({
 // Listado Filtrado
 const obtenerListadoCitasFiltrado = ({
    ID_USUARIO,
-   FECHA_INICAL,
+   FECHA_INICIAL,
    FECHA_FINAL
 }) => {
    return new Promise((resolve, reject) => {
       const query = 'CALL pa_citas_listado_filtrado(?, ?, ?)';
 
-      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_USUARIO, FECHA_INICIAL, FECHA_FINAL], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
