@@ -29,7 +29,7 @@ const consultaAvanzada = ({
    return new Promise((resolve, reject) => {
       const query = 'CALL pa_citas_consulta_avanzada(?, ?, ?, ?)';
 
-      mysqlConnection.query(query, [ID_USUARIO, REALIZADO, FECHA_INICAL, FECHA_FINAL], (err, rows, fields) => {
+      mysqlConnection.query(query, [ID_USUARIO, REALIZADO, FECHA_INICIAL, FECHA_FINAL], (err, rows, fields) => {
          if (!err) {
             resolve(rows[0]);
          }
