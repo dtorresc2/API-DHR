@@ -42,6 +42,58 @@ const obtenerBitacoraFiltrada = ({
    });
 }
 
+const consultaAvanzada = ({
+   ID_USUARIO,
+   ID_CUENTA,
+   EVENTO,
+   SECCION,
+   FECHA_INICIAL,
+   FECHA_FINAL
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_bitacora_consulta_avanzada(?, ?, ?, ?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, ID_CUENTA, EVENTO, SECCION, FECHA_INICIAL, FECHA_FINAL], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const obtenerListadoEventos = () => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_bitacora_eventos_listado()';
+
+      mysqlConnection.query(query, (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+const obtenerListadoSecciones = () => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_bitacora_secciones_listado()';
+
+      mysqlConnection.query(query, (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 // Listado de Bitacora
 const obtenerListadoBitacoraXUsuario = ({ id }) => {
    return new Promise((resolve, reject) => {
@@ -82,5 +134,8 @@ module.exports = {
    obtenerListadoBitacora: obtenerListadoBitacora,
    registrarBitacora: registrarBitacora,
    obtenerListadoBitacoraXUsuario: obtenerListadoBitacoraXUsuario,
-   obtenerBitacoraFiltrada: obtenerBitacoraFiltrada
+   obtenerBitacoraFiltrada: obtenerBitacoraFiltrada,
+   obtenerListadoEventos:obtenerListadoEventos,
+   obtenerListadoSecciones: obtenerListadoSecciones,
+   consultaAvanzada: consultaAvanzada
 }

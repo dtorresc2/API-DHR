@@ -20,6 +20,21 @@ router.post('/bitacora/consulta/filtrado', guardia, async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/bitacora/consulta/avanzada', guardia, async (req, res) => {
+   const resultado = await querysBitacora.consultaAvanzada(req.body);
+   res.json(resultado);
+});
+
+router.get('/bitacora/consulta/eventos', guardia, async (req, res) => {
+   const resultado = await querysBitacora.obtenerListadoEventos();
+   res.json(resultado);
+});
+
+router.get('/bitacora/consulta/secciones', guardia, async (req, res) => {
+   const resultado = await querysBitacora.obtenerListadoSecciones();
+   res.json(resultado);
+});
+
 router.post('/bitacora', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY-MM-DD HH:mm:ss');
    req.body.FECHA = fechaMoment;
