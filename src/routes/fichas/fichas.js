@@ -103,6 +103,7 @@ router.post('/fichas/consulta/filtrado', guardia, async (req, res) => {
 });
 
 router.post('/fichas/consulta/avanzado', guardia, async (req, res) => {
+   console.log(req.body);
    const resultado = await querysFichas.consultaAvanzada(req.body);
    res.json(resultado);
 });
