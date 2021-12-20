@@ -102,6 +102,11 @@ router.post('/fichas/consulta/filtrado', guardia, async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/fichas/consulta/avanzado', guardia, async (req, res) => {
+   const resultado = await querysFichas.consultaAvanzada(req.body);
+   res.json(resultado);
+});
+
 router.get('/fichas/:id/usuario', guardia, async (req, res) => {
    const resultado = await querysFichas.obtenerListadoFichasXUsuario(req.params);
    res.json(resultado);

@@ -128,6 +128,28 @@ const obtenerListadoFichasFiltrado = ({
    });
 }
 
+const consultaAvanzada = ({
+   ID_USUARIO,
+   ESTADO,
+   TIPO_SALDO,
+   SALDO,
+   FECHA_INICIAL,
+   FECHA_FINAL
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_fichas_consulta_avanzada(?, ?, ?, ?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, ESTADO, TIPO_SALDO, SALDO, FECHA_INICIAL, FECHA_FINAL], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 const obtenerConteoFichas = (id) => {
    return new Promise((resolve, reject) => {
       const query = 'SELECT ' +
@@ -224,6 +246,7 @@ module.exports = {
    obtenerConteoFichas: obtenerConteoFichas,
    obtenerListadoFichasXUsuario: obtenerListadoFichasXUsuario,
    obtenerListadoFichasFiltrado: obtenerListadoFichasFiltrado,
+   consultaAvanzada: consultaAvanzada,
    actualizarFichas: actualizarFichas,
    actualizarEstadoFicha: actualizarEstadoFicha,
    eliminarFicha: eliminarFicha,
