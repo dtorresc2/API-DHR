@@ -1,6 +1,5 @@
 const mysqlConnection = require('../../../config/db');
 
-
 // Listado de Citas
 const obtenerListadoCitas = ({
    ID_USUARIO,
@@ -19,6 +18,45 @@ const obtenerListadoCitas = ({
       });
    });
 }
+
+const obtenerListadoCitasDia = ({
+   ID_USUARIO,
+   FECHA
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_citas_listado_pendientes_dia(?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, FECHA], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+
+const obtenerListadoCitasCerca = ({
+   ID_USUARIO,
+   FECHA,
+   LIMITE
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_citas_listado_pendientes_cerca(?, ?, ?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, FECHA, LIMITE], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 
 const consultaAvanzada = ({
    ID_USUARIO,
@@ -145,6 +183,8 @@ const eliminarCita = ({
 module.exports = {
    obtenerListadoCitas: obtenerListadoCitas,
    obtenerListadoCitasFiltrado: obtenerListadoCitasFiltrado,
+   obtenerListadoCitasDia: obtenerListadoCitasDia,
+   obtenerListadoCitasCerca: obtenerListadoCitasCerca,
    registrarCita: registrarCita,
    actualizarCita: actualizarCita,
    actualizarEstado: actualizarEstado,

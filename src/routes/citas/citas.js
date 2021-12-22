@@ -19,6 +19,16 @@ router.post('/citas/consulta/filtrado', guardia, async (req, res) => {
    res.json(resultado);
 });
 
+router.post('/citas/consulta/dia', guardia, async (req, res) => {
+   const resultado = await querysCitas.obtenerListadoCitasDia(req.body);
+   res.json(resultado);
+});
+
+router.post('/citas/consulta/cerca', guardia, async (req, res) => {
+   const resultado = await querysCitas.obtenerListadoCitasCerca(req.body);
+   res.json(resultado);
+});
+
 router.post('/citas/registro', guardia, async (req, res) => {
    const resultado = await querysCitas.registrarCita(req.body);
    res.json(resultado);
