@@ -12,8 +12,6 @@ app.use(express.json({ limit: '80MB' }));
 app.use(cors());
 dotenv.config();
 
-// Rutas
-
 // Rutas - Citas
 app.use(require('./routes/citas/citas'));
 
@@ -36,7 +34,10 @@ app.use(require('./routes/fichas/historialOdonto'));
 app.use(require('./routes/fichas/tratamientos'));
 app.use(require('./routes/fichas/historialFoto'));
 
+// Rutas - Ficha Especial (Evaluacion)
+app.use(require('./routes/evaluaciones/evaluaciones'));
+
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
    console.log('Servidor en Puerto ', app.get('port'));
-})
+});
