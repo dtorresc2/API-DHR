@@ -3,9 +3,9 @@ const router = express.Router();
 const moment = require('moment-timezone');
 const funcionesS3 = require('./../../config/s3');
 const guardia = require('./../../config/guardia');
-const req = require('express/lib/request');
 
 const querysEvaluaciones = require('./controllers/querysEvaluaciones');
+const querysContrato = require('./controllers/querysContrato');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -16,6 +16,12 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
 
    // ENCABEZADO EVALUACION
    const resultado = await querysEvaluaciones.registrarEvaluacion(req.body.EVALUACION);
+   let ID_EVALUACION = resultado[0].ID;
+
+   // CONTRATO
+   req.body.CONTRATO.ID_EVALUACION = ID_EVALUACION;
+   const resultadoContrato = await querysContrato.registrarContrato(req.body.CONTRATO);
+   
    res.json(resultado);
 });
 
