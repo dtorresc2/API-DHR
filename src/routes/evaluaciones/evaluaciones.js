@@ -8,7 +8,13 @@ const req = require('express/lib/request');
 const querysEvaluaciones = require('./controllers/querysEvaluaciones');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
-   const resultado = await querysEvaluaciones.registrarEvaluacion(req.body);
+   const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
+   req.body.EVALUACION.FECHA = fechaMoment;
+
+   const conteo = await querysEvaluaciones.obtenerConteoEvaluaciones(req.body.EVALUACION.ID_USUARIO);
+   req.body.EVALUACION.CODIGO_INTERNO = conteo.CONTEO;
+
+   const resultado = await querysEvaluaciones.registrarEvaluacion(req.body.EVALUACION);
    res.json(resultado);
 });
 

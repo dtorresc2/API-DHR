@@ -56,6 +56,25 @@ const obtenerListadoEvaluaciones = ({
    });
 }
 
+const obtenerConteoEvaluaciones = (id) => {
+   return new Promise((resolve, reject) => {
+      const query = 'SELECT ' +
+         'IFNULL(MAX(codigo_interno), 0) + 1 AS CONTEO ' +
+         'FROM evaluacion ' +
+         'WHERE id_usuario = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+
 // Registro de Citas
 const actualizarEvaluacion = ({
    ID_EVALUACION,
@@ -91,5 +110,6 @@ const actualizarEvaluacion = ({
 module.exports = {
    registrarEvaluacion: registrarEvaluacion,
    actualizarEvaluacion: actualizarEvaluacion,
-   obtenerListadoEvaluaciones: obtenerListadoEvaluaciones
+   obtenerListadoEvaluaciones: obtenerListadoEvaluaciones,
+   obtenerConteoEvaluaciones: obtenerConteoEvaluaciones
 }
