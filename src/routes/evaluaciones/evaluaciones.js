@@ -14,6 +14,7 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const conteo = await querysEvaluaciones.obtenerConteoEvaluaciones(req.body.EVALUACION.ID_USUARIO);
    req.body.EVALUACION.CODIGO_INTERNO = conteo.CONTEO;
 
+   // ENCABEZADO EVALUACION
    const resultado = await querysEvaluaciones.registrarEvaluacion(req.body.EVALUACION);
    res.json(resultado);
 });
