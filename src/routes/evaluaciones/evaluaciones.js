@@ -6,6 +6,8 @@ const guardia = require('./../../config/guardia');
 
 const querysEvaluaciones = require('./controllers/querysEvaluaciones');
 const querysContrato = require('./controllers/querysContrato');
+const querysAlineacionDental = require('./controllers/querysAlineacionDental');
+const querysDeglucion = require('./controllers/querysDeglucion');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -21,7 +23,15 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // CONTRATO
    req.body.CONTRATO.ID_EVALUACION = ID_EVALUACION;
    const resultadoContrato = await querysContrato.registrarContrato(req.body.CONTRATO);
+
+   // DETALLE EVALUACION - ALINEACION DENTAL
+   req.body.DETALLE_EVALUACION.ALINEACION_DENTAL.ID_EVALUACION = ID_EVALUACION;
+   const resultadoEvaluacion = await querysAlineacionDental.registrarAlineacionDental(req.body.DETALLE_EVALUACION.ALINEACION_DENTAL);
    
+   // DETALLE EVALUACION - DEGLUCION
+   req.body.DETALLE_EVALUACION.DEGLUCION.ID_EVALUACION = ID_EVALUACION;
+   const resultadoDeglucion = await querysDeglucion.registrarDeglucion(req.body.DETALLE_EVALUACION.DEGLUCION);
+
    res.json(resultado);
 });
 
