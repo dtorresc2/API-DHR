@@ -8,6 +8,7 @@ const querysEvaluaciones = require('./controllers/querysEvaluaciones');
 const querysContrato = require('./controllers/querysContrato');
 const querysAlineacionDental = require('./controllers/querysAlineacionDental');
 const querysDeglucion = require('./controllers/querysDeglucion');
+const querysDesarrollo = require('./controllers/querysDesarrollo');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -31,6 +32,10 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // DETALLE EVALUACION - DEGLUCION
    req.body.DETALLE_EVALUACION.DEGLUCION.ID_EVALUACION = ID_EVALUACION;
    const resultadoDeglucion = await querysDeglucion.registrarDeglucion(req.body.DETALLE_EVALUACION.DEGLUCION);
+
+   // DETALLE EVALUACION - DESARROLLO
+   req.body.DETALLE_EVALUACION.DESARROLLO.ID_EVALUACION = ID_EVALUACION;
+   const resultadoDesarrollo = await querysDesarrollo.registrarDesarrollo(req.body.DETALLE_EVALUACION.DESARROLLO);
 
    res.json(resultado);
 });
