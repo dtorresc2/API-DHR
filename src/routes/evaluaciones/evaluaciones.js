@@ -10,6 +10,8 @@ const querysAlineacionDental = require('./controllers/querysAlineacionDental');
 const querysDeglucion = require('./controllers/querysDeglucion');
 const querysDesarrollo = require('./controllers/querysDesarrollo');
 const querysDisfucion = require('./controllers/querysDisfucionTMJ');
+const querysFaSuperior = require('./controllers/querysFaSuperior');
+const qierysFaInferior = require('./controllers/querysFAInferior');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -29,7 +31,7 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // DETALLE EVALUACION - ALINEACION DENTAL
    req.body.DETALLE_EVALUACION.ALINEACION_DENTAL.ID_EVALUACION = ID_EVALUACION;
    const resultadoEvaluacion = await querysAlineacionDental.registrarAlineacionDental(req.body.DETALLE_EVALUACION.ALINEACION_DENTAL);
-   
+
    // DETALLE EVALUACION - DEGLUCION
    req.body.DETALLE_EVALUACION.DEGLUCION.ID_EVALUACION = ID_EVALUACION;
    const resultadoDeglucion = await querysDeglucion.registrarDeglucion(req.body.DETALLE_EVALUACION.DEGLUCION);
@@ -42,6 +44,13 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    req.body.DETALLE_EVALUACION.DISFUCION_TMJ.ID_EVALUACION = ID_EVALUACION;
    const resultadoDisfucion = await querysDisfucion.registrarDisfucion(req.body.DETALLE_EVALUACION.DISFUCION_TMJ);
 
+   // DETALLE EVALUACION - FA SUPERIOR
+   req.body.DETALLE_EVALUACION.FA_SUPERIOR.ID_EVALUACION = ID_EVALUACION;
+   const resultadoFASuperior = await querysFaSuperior.registrarFASuperior(req.body.DETALLE_EVALUACION.FA_SUPERIOR);
+
+   // DETALLE EVALUACION - FA SUPERIOR
+   req.body.DETALLE_EVALUACION.FA_INFERIOR.ID_EVALUACION = ID_EVALUACION;
+   const resultadoFAInferior = await qierysFaInferior.registrarFAInferior(req.body.DETALLE_EVALUACION.FA_INFERIOR);
 
    res.json(resultado);
 });
