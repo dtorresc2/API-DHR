@@ -11,7 +11,9 @@ const querysDeglucion = require('./controllers/querysDeglucion');
 const querysDesarrollo = require('./controllers/querysDesarrollo');
 const querysDisfucion = require('./controllers/querysDisfucionTMJ');
 const querysFaSuperior = require('./controllers/querysFaSuperior');
-const qierysFaInferior = require('./controllers/querysFAInferior');
+const querysFaInferior = require('./controllers/querysFAInferior');
+const querysHabitos = require('./controllers/querysHabitos');
+const querysLabios = require('./controllers/querysLabios');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -50,7 +52,15 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
 
    // DETALLE EVALUACION - FA SUPERIOR
    req.body.DETALLE_EVALUACION.FA_INFERIOR.ID_EVALUACION = ID_EVALUACION;
-   const resultadoFAInferior = await qierysFaInferior.registrarFAInferior(req.body.DETALLE_EVALUACION.FA_INFERIOR);
+   const resultadoFAInferior = await querysFaInferior.registrarFAInferior(req.body.DETALLE_EVALUACION.FA_INFERIOR);
+
+   // DETALLE EVALUACION - HABITOS
+   req.body.DETALLE_EVALUACION.HABITOS.ID_EVALUACION = ID_EVALUACION;
+   const resultadoHabitos = await querysHabitos.registrarHabitos(req.body.DETALLE_EVALUACION.HABITOS);
+
+   // DETALLE EVALUACION - LABIOS
+   req.body.DETALLE_EVALUACION.LABIOS.ID_EVALUACION = ID_EVALUACION;
+   const resultadoLabios = await querysLabios.registrarLabios(req.body.DETALLE_EVALUACION.LABIOS);
 
    res.json(resultado);
 });
