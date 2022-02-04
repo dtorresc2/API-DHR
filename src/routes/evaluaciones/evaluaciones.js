@@ -133,8 +133,8 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
          const resultadoFoto = await querysFotosEvaluacion.registrarFoto(element);
       }
    }
-   // Actualizacion de Saldos - Ficha
-   // const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_FICHA);
+   // Actualizacion de Saldos - Evaluacion
+   const resultadoSaldoFicha = await querysEvaluaciones.actualizarSaldoEvaluacion(req.body.EVALUACION.ID_USUARIO, ID_EVALUACION);
    // Actualizavion de Saldos - Pacientes
    // const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
 

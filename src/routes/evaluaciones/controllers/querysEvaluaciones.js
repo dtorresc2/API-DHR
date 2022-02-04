@@ -74,7 +74,6 @@ const obtenerConteoEvaluaciones = (id) => {
    });
 }
 
-
 // Registro de Citas
 const actualizarEvaluacion = ({
    ID_EVALUACION,
@@ -107,9 +106,29 @@ const actualizarEvaluacion = ({
    });
 }
 
+// Actualizar Saldos
+const actualizarSaldoEvaluacion = (
+   ID_USUARIO,
+   ID_EVALUACION
+) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_evaluaciones_saldos_actualiza(?,?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, ID_EVALUACION], (err, rows, fields) => {
+         if (!err) {
+            resolve({ ID: ID_EVALUACION, MENSAJE: 'SALDO ACTUALIZADO' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
    registrarEvaluacion: registrarEvaluacion,
    actualizarEvaluacion: actualizarEvaluacion,
    obtenerListadoEvaluaciones: obtenerListadoEvaluaciones,
-   obtenerConteoEvaluaciones: obtenerConteoEvaluaciones
+   obtenerConteoEvaluaciones: obtenerConteoEvaluaciones,
+   actualizarSaldoEvaluacion: actualizarSaldoEvaluacion
 }

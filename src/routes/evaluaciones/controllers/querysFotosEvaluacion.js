@@ -15,7 +15,7 @@ const registrarFoto = ({
          DESCRIPCION,
          NOMBRE
       ], (err, rows, fields) => {
-         console.log(err);
+         // console.log(err);
          if (!err) {
             resolve({ ID: rows.insertId, MENSAJE: "FOTO REGISTRADA" });
          }
