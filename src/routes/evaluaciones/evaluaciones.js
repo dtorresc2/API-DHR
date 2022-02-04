@@ -17,6 +17,9 @@ const querysLabios = require('./controllers/querysLabios');
 const querysLengua = require('./controllers/querysLengua');
 const querysOclusion = require('./controllers/querysOclusion');
 const querysRespiracion = require('./controllers/querysRespiracion');
+const querysVisitas = require('./controllers/querysVisitas');
+const querysPagosEvaluacion = require('./controllers/querysPagosEvaluacion');
+const querysFotosEvaluacion = require('./controllers/querysFotosEvaluacion');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const FECHA_ACTUAL = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -76,6 +79,64 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // DETALLE EVALUACION - RESPIRACION
    req.body.DETALLE_EVALUACION.RESPIRACION.ID_EVALUACION = ID_EVALUACION;
    const resultadoRespiracion = await querysRespiracion.registrarRespiracion(req.body.DETALLE_EVALUACION.RESPIRACION);
+
+   // DETALLE VISITAS
+   let contador = 0;
+   if (req.body.VISITAS.length > 0) {
+      let arreglo = req.body.VISITAS;
+
+      for (let element of arreglo) {
+         contador++;
+         element.FECHA = FECHA_ACTUAL;
+         element.ID_EVALUACION = ID_EVALUACION;
+         const resultado = await querysVisitas.registrarVisita(element);
+      }
+   }
+
+   // DETALLE PAGOS
+   contador = 0;
+
+   if (req.body.PAGOS.length > 0) {
+      let arreglo = req.body.PAGOS;
+
+      for (let element of arreglo) {
+         contador++;
+         element.FECHA = FECHA_ACTUAL;
+         element.ID_EVALUACION = ID_EVALUACION;
+         const resultado = await querysPagosEvaluacion.registrarPago(element);
+      }
+   }
+
+   // FOTOS
+   contador = 0;
+
+   if (req.body.FOTOS.length > 0) {
+      let arreglo = req.body.FOTOS;
+
+      for (let element of arreglo) {
+         contador++;
+         element.ID_EVALUACION = ID_EVALUACION;
+
+         // RegistrarImagen
+         let ruta = "Usuarios/" + req.body.EVALUACION.ID_USUARIO + "/FE/FE-" + ID_EVALUACION;
+         let nombre = "F-" + (contador + 1);
+         let nombreArchivo = `${ruta}/${nombre}.jpg`
+
+         const buffer = Buffer.from(element.FOTO, 'base64');
+         const resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
+
+         // Ajustar Datos
+         element.DESCRIPCION = "FOTO EVALUACION - Foto #" + (contador + 1);
+         element.URL = ruta;
+         element.NOMBRE = nombre + '.jpg';
+
+         const resultadoFoto = await querysFotosEvaluacion.registrarFoto(element);
+      }
+   }
+   // Actualizacion de Saldos - Ficha
+   // const resultadoSaldoFicha = await querysFichas.actualizarSaldoFicha(resultadoFichas.ID_USUARIO, resultadoFichas.ID_FICHA);
+   // Actualizavion de Saldos - Pacientes
+   // const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
 
    res.json(resultado);
 });
