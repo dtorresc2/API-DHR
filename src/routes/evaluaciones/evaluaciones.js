@@ -15,6 +15,7 @@ const querysFaInferior = require('./controllers/querysFAInferior');
 const querysHabitos = require('./controllers/querysHabitos');
 const querysLabios = require('./controllers/querysLabios');
 const querysLengua = require('./controllers/querysLengua');
+const querysOclusion = require('./controllers/querysOclusion');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const FECHA_ACTUAL = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -66,6 +67,10 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // DETALLE EVALUACION - LENGUA
    req.body.DETALLE_EVALUACION.LENGUA.ID_EVALUACION = ID_EVALUACION;
    const resultadoLengua = await querysLengua.registrarLengua(req.body.DETALLE_EVALUACION.LENGUA);
+
+   // DETALLE EVALUACION - OCLUSION
+   req.body.DETALLE_EVALUACION.OCLUSION.ID_EVALUACION = ID_EVALUACION;
+   const resultadoOclusion = await querysOclusion.registrarOclusion(req.body.DETALLE_EVALUACION.OCLUSION);
 
    res.json(resultado);
 });

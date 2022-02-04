@@ -15,6 +15,7 @@ const registrarLengua = ({
          INCORRECTA_POSICION,
          INSERCION
       ], (err, rows, fields) => {
+         // console.log(err);
          if (!err) {
             resolve(rows[0]);
          }
