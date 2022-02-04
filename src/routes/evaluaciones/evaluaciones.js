@@ -14,10 +14,11 @@ const querysFaSuperior = require('./controllers/querysFaSuperior');
 const querysFaInferior = require('./controllers/querysFAInferior');
 const querysHabitos = require('./controllers/querysHabitos');
 const querysLabios = require('./controllers/querysLabios');
+const querysLengua = require('./controllers/querysLengua');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
-   const fechaMoment = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
-   req.body.EVALUACION.FECHA = fechaMoment;
+   const FECHA_ACTUAL = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
+   req.body.EVALUACION.FECHA = FECHA_ACTUAL;
 
    const conteo = await querysEvaluaciones.obtenerConteoEvaluaciones(req.body.EVALUACION.ID_USUARIO);
    req.body.EVALUACION.CODIGO_INTERNO = conteo.CONTEO;
@@ -61,6 +62,10 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // DETALLE EVALUACION - LABIOS
    req.body.DETALLE_EVALUACION.LABIOS.ID_EVALUACION = ID_EVALUACION;
    const resultadoLabios = await querysLabios.registrarLabios(req.body.DETALLE_EVALUACION.LABIOS);
+
+   // DETALLE EVALUACION - LENGUA
+   req.body.DETALLE_EVALUACION.LENGUA.ID_EVALUACION = ID_EVALUACION;
+   const resultadoLengua = await querysLengua.registrarLengua(req.body.DETALLE_EVALUACION.LENGUA);
 
    res.json(resultado);
 });
