@@ -20,6 +20,7 @@ const querysRespiracion = require('./controllers/querysRespiracion');
 const querysVisitas = require('./controllers/querysVisitas');
 const querysPagosEvaluacion = require('./controllers/querysPagosEvaluacion');
 const querysFotosEvaluacion = require('./controllers/querysFotosEvaluacion');
+const querysPacientes = require('../pacientes/controllers/querysPacientes');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const FECHA_ACTUAL = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -136,7 +137,7 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // Actualizacion de Saldos - Evaluacion
    const resultadoSaldoFicha = await querysEvaluaciones.actualizarSaldoEvaluacion(req.body.EVALUACION.ID_USUARIO, ID_EVALUACION);
    // Actualizavion de Saldos - Pacientes
-   // const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(resultadoFichas.ID_USUARIO, resultadoFichas.ID_PACIENTE);
+   const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(req.body.EVALUACION.ID_USUARIO, req.body.EVALUACION.ID_PACIENTE);
 
    res.json(resultado);
 });
