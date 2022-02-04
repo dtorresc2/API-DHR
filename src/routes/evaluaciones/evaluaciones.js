@@ -16,6 +16,7 @@ const querysHabitos = require('./controllers/querysHabitos');
 const querysLabios = require('./controllers/querysLabios');
 const querysLengua = require('./controllers/querysLengua');
 const querysOclusion = require('./controllers/querysOclusion');
+const querysRespiracion = require('./controllers/querysRespiracion');
 
 router.post('/evaluaciones/registro', guardia, async (req, res) => {
    const FECHA_ACTUAL = moment().tz("America/Guatemala").format('YYYY/MM/DD HH:mm:ss');
@@ -71,6 +72,10 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    // DETALLE EVALUACION - OCLUSION
    req.body.DETALLE_EVALUACION.OCLUSION.ID_EVALUACION = ID_EVALUACION;
    const resultadoOclusion = await querysOclusion.registrarOclusion(req.body.DETALLE_EVALUACION.OCLUSION);
+
+   // DETALLE EVALUACION - RESPIRACION
+   req.body.DETALLE_EVALUACION.RESPIRACION.ID_EVALUACION = ID_EVALUACION;
+   const resultadoRespiracion = await querysRespiracion.registrarRespiracion(req.body.DETALLE_EVALUACION.RESPIRACION);
 
    res.json(resultado);
 });
