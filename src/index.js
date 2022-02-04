@@ -36,6 +36,7 @@ app.use(require('./routes/fichas/historialFoto'));
 
 // Rutas - Ficha Especial (Evaluacion)
 app.use(require('./routes/evaluaciones/evaluaciones'));
+app.use(require('./routes/evaluaciones/visitas'));
 
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
