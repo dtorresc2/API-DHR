@@ -25,8 +25,7 @@ const registrarFAInferior = ({
    });
 }
 
-const actualizarFAInferior = ({
-   ID_EVALUACION,
+const actualizarFAInferior = (ID_EVALUACION,{
    ID_FA_INFERIOR,
    NORMAL,
    ESTRECHA,

@@ -26,8 +26,7 @@ const registrarLengua = ({
    });
 }
 
-const actualizarLengua = ({
-   ID_EVALUACION,
+const actualizarLengua = (ID_EVALUACION, {
    ID_LENGUA,
    CORRECTA_POSICION,
    INCORRECTA_POSICION,

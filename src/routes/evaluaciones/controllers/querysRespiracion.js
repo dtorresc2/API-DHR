@@ -29,8 +29,7 @@ const registrarRespiracion = ({
    });
 }
 
-const actualizarOclusion = ({
-   ID_EVALUACION,
+const actualizarRespiracion = (ID_EVALUACION, {
    ID_RESPIRACION,
    RES_NASALLEV,
    RES_NSAFUERTE,
@@ -62,5 +61,5 @@ const actualizarOclusion = ({
 
 module.exports = {
    registrarRespiracion: registrarRespiracion,
-   actualizarOclusion: actualizarOclusion
+   actualizarRespiracion: actualizarRespiracion
 }

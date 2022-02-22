@@ -23,8 +23,7 @@ const registrarDeglucion = ({
    });
 }
 
-const actualizarDeglucion = ({
-   ID_EVALUACION,
+const actualizarDeglucion = (ID_EVALUACION, {
    ID_DEGLUCION,
    PATRON_CORRECTO,
    PATRON_INCORRECTO

@@ -33,8 +33,7 @@ const registrarDisfucion = ({
    });
 }
 
-const actualizarDifusion = ({
-   ID_EVALUACION,
+const actualizarDifusion = (ID_EVALUACION, {
    ID_DEGLUCION,
    TEMPORAL,
    PTERIGOIDEO,

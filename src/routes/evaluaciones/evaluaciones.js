@@ -57,7 +57,7 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    req.body.DETALLE_EVALUACION.FA_SUPERIOR.ID_EVALUACION = ID_EVALUACION;
    const resultadoFASuperior = await querysFaSuperior.registrarFASuperior(req.body.DETALLE_EVALUACION.FA_SUPERIOR);
 
-   // DETALLE EVALUACION - FA SUPERIOR
+   // DETALLE EVALUACION - FA INFERIOR
    req.body.DETALLE_EVALUACION.FA_INFERIOR.ID_EVALUACION = ID_EVALUACION;
    const resultadoFAInferior = await querysFaInferior.registrarFAInferior(req.body.DETALLE_EVALUACION.FA_INFERIOR);
 
@@ -150,6 +150,43 @@ router.post('/evaluaciones/consulta', guardia, async (req, res) => {
 router.post('/evaluaciones/actualiza', guardia, async (req, res) => {
    const resultado = await querysEvaluaciones.actualizarEvaluacion(req.body);
    res.json(resultado);
+});
+
+router.post('/evaluaciones/detalle/actualiza', guardia, async (req, res) => {
+   // DETALLE EVALUACION - ALINEACION DENTAL
+   const resultadoAlineacion = await querysAlineacionDental.actualizarAlineacionDental(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.ALINEACION_DENTAL);
+   
+   // DETALLE EVALUACION - DEGLUCION
+   const resultadoDeglucion = await querysDeglucion.actualizarDeglucion(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.DEGLUCION);
+
+   // DETALLE EVALUACION - DESARROLLO
+   const resultadoDesarrollo = await querysDesarrollo.actualizarDesarrollo(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.DESARROLLO);
+
+   // DETALLE EVALUACION - DISFUCION TMJ
+   const resultadoDisfucion = await querysDisfucion.actualizarDifusion(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.DISFUCION_TMJ);
+
+   // DETALLE EVALUACION - FA SUPERIOR
+   const resultadoFASuperior = await querysFaSuperior.actualizarFASuperior(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.FA_SUPERIOR);
+
+   // DETALLE EVALUACION - FA INFERIOR
+   const resultadoFAInferior = await querysFaInferior.actualizarFAInferior(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.FA_INFERIOR);
+
+   // DETALLE EVALUACION - HABITOS
+   const resultadoHabitos = await querysHabitos.actualizarHabitos(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.HABITOS);
+
+   // DETALLE EVALUACION - LABIOS
+   const resultadoLabios = await querysLabios.actualizarLabios(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.LABIOS);
+
+   // DETALLE EVALUACION - LENGUA
+   const resultadoLengua = await querysLengua.actualizarLengua(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.LENGUA);
+
+   // DETALLE EVALUACION - OCLUSION
+   const resultadoOclusion = await querysOclusion.actualizarOclusion(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.OCLUSION);
+
+   // DETALLE EVALUACION - RESPIRACION
+   const resultadoRespiracion = await querysRespiracion.actualizarRespiracion(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.RESPIRACION);
+
+   res.json(resultadoAlineacion);
 });
 
 module.exports = router;

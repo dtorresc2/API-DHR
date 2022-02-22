@@ -23,8 +23,7 @@ const registrarLabios = ({
    });
 }
 
-const actualizarLabios = ({
-   ID_EVALUACION,
+const actualizarLabios = (ID_EVALUACION, {
    ID_LABIOS,
    CORRECTA_POST,
    INCORRECTA_POST

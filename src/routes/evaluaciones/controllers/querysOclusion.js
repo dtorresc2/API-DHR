@@ -29,8 +29,7 @@ const registrarOclusion = ({
    });
 }
 
-const actualizarOclusion = ({
-   ID_EVALUACION,
+const actualizarOclusion = (ID_EVALUACION, {
    ID_OCLUSION,
    RELACION_CORRECTA,
    SOBRE_MORDIDA,

@@ -29,8 +29,7 @@ const registrarHabitos = ({
    });
 }
 
-const actualizarHabitos = ({
-   ID_EVALUACION,
+const actualizarHabitos = (ID_EVALUACION, {
    ID_HABITOS,
    BRUXISMO,
    SUCCION,

@@ -29,8 +29,7 @@ const registrarAlineacionDental = ({
    });
 }
 
-const actualizarAlineacionDental = ({
-   ID_EVALUACION,
+const actualizarAlineacionDental = (ID_EVALUACION, {
    ID_ALINEACION,
    BUENA_ALIMENTACION,
    APILLAMIENTO_MAXILLAR,
