@@ -26,6 +26,24 @@ const registrarFoto = ({
    });
 }
 
+// Eliminar fotos
+const eliminarFotosEvaluacion = (id) => {
+   return new Promise((resolve, reject) => {
+      const query = 'DELETE FROM fotos_especial WHERE id_evaluacion = ?';
+
+      mysqlConnection.query(query, [id], (err, rows, fields) => {
+         console.log(err);
+         if (!err) {
+            resolve({ ID: id, MENSAJE: 'FOTOS ELIMINADAS' });
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
 module.exports = {
-   registrarFoto: registrarFoto
+   registrarFoto: registrarFoto,
+   eliminarFotosEvaluacion: eliminarFotosEvaluacion
 }

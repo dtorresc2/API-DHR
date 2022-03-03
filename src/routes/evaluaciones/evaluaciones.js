@@ -143,7 +143,7 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
          const resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
 
          // Ajustar Datos
-         element.DESCRIPCION = "FOTO EVALUACION - Foto #" + (contador + 1);
+         element.DESCRIPCION = "FOTO EVALUACION - Foto #" + contador;
          element.URL = ruta;
          element.NOMBRE = nombre + '.jpg';
 

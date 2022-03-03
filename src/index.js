@@ -39,6 +39,7 @@ app.use(require('./routes/evaluaciones/evaluaciones'));
 app.use(require('./routes/evaluaciones/visitas'));
 app.use(require('./routes/evaluaciones/pagosEvaluacion'));
 app.use(require('./routes/evaluaciones/contrato'));
+app.use(require('./routes/evaluaciones/fotosEvaluaciones'));
 
 // Iniciando Servidor
 app.listen(app.get('port'), () => {
