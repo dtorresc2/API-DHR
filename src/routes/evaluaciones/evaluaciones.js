@@ -35,6 +35,22 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
 
    // CONTRATO
    req.body.CONTRATO.ID_EVALUACION = ID_EVALUACION;
+
+   // RegistrarImagen - Doctor
+   let ruta = "Usuarios/" + req.body.EVALUACION.ID_USUARIO + "/FE/FE-" + ID_EVALUACION + "/Contrato";
+   let nombre = "firma_doctor";
+   let nombreArchivo = `${ruta}/${nombre}.jpg`
+   let buffer = Buffer.from(CONTRATO.URL_FIRMA_DOC, 'base64');
+   let resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
+   req.body.CONTRATO.URL_FIRMA_DOC = ruta;
+
+   // RegistrarImagen - Paciente
+   nombre = "firma_paciente";
+   nombreArchivo = `${ruta}/${nombre}.jpg`
+   buffer = Buffer.from(CONTRATO.URL_FIRMA_PAC, 'base64');
+   resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
+   req.body.CONTRATO.URL_FIRMA_PAC = ruta;
+
    const resultadoContrato = await querysContrato.registrarContrato(req.body.CONTRATO);
 
    // DETALLE EVALUACION - ALINEACION DENTAL
@@ -119,7 +135,7 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
          element.ID_EVALUACION = ID_EVALUACION;
 
          // RegistrarImagen
-         let ruta = "Usuarios/" + req.body.EVALUACION.ID_USUARIO + "/FE/FE-" + ID_EVALUACION;
+         let ruta = "Usuarios/" + req.body.EVALUACION.ID_USUARIO + "/FE/FE-" + ID_EVALUACION + "/Fotos";
          let nombre = "F-" + (contador + 1);
          let nombreArchivo = `${ruta}/${nombre}.jpg`
 
@@ -155,7 +171,7 @@ router.post('/evaluaciones/actualiza', guardia, async (req, res) => {
 router.post('/evaluaciones/detalle/actualiza', guardia, async (req, res) => {
    // DETALLE EVALUACION - ALINEACION DENTAL
    const resultadoAlineacion = await querysAlineacionDental.actualizarAlineacionDental(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.ALINEACION_DENTAL);
-   
+
    // DETALLE EVALUACION - DEGLUCION
    const resultadoDeglucion = await querysDeglucion.actualizarDeglucion(req.body.DETALLE_EVALUACION.ID_EVALUACION, req.body.DETALLE_EVALUACION.DEGLUCION);
 
