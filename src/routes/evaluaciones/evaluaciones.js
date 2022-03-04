@@ -37,19 +37,19 @@ router.post('/evaluaciones/registro', guardia, async (req, res) => {
    req.body.CONTRATO.ID_EVALUACION = ID_EVALUACION;
 
    // RegistrarImagen - Doctor
-   let ruta = "Usuarios/" + req.body.EVALUACION.ID_USUARIO + "/FE/FE-" + ID_EVALUACION + "/Contrato";
+   let rutaContrato = "Usuarios/" + req.body.EVALUACION.ID_USUARIO + "/FE/FE-" + ID_EVALUACION + "/Contrato";
    let nombre = "firma_doctor";
-   let nombreArchivo = `${ruta}/${nombre}.jpg`
+   let nombreArchivo = `${rutaContrato}/${nombre}.jpg`
    let buffer = Buffer.from(CONTRATO.URL_FIRMA_DOC, 'base64');
    let resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
-   req.body.CONTRATO.URL_FIRMA_DOC = ruta;
+   req.body.CONTRATO.URL_FIRMA_DOC = rutaContrato;
 
    // RegistrarImagen - Paciente
    nombre = "firma_paciente";
-   nombreArchivo = `${ruta}/${nombre}.jpg`
+   nombreArchivo = `${rutaContrato}/${nombre}.jpg`
    buffer = Buffer.from(CONTRATO.URL_FIRMA_PAC, 'base64');
    resultadoURL = await funcionesS3.imageUpload(nombreArchivo, buffer);
-   req.body.CONTRATO.URL_FIRMA_PAC = ruta;
+   req.body.CONTRATO.URL_FIRMA_PAC = rutaContrato;
 
    const resultadoContrato = await querysContrato.registrarContrato(req.body.CONTRATO);
 
@@ -204,5 +204,16 @@ router.post('/evaluaciones/detalle/actualiza', guardia, async (req, res) => {
 
    res.json(resultadoAlineacion);
 });
+
+router.post('/evaluaciones/elimina', guardia, async (req, res) => {
+   const resultado = await querysEvaluaciones.eliminarEvaluacion(req.body);
+   const resultadoSaldoPaciente = await querysPacientes.actualizarSaldoPaciente(req.body.ID_USUARIO, req.body.ID_PACIENTE);
+
+   let rutaContrato = "Usuarios/" + req.body.ID_USUARIO + "/FE/FE-" + req.body.ID_EVALUACION;
+   let resultadoEliminarCarpeta = await funcionesS3.eliminarCarpeta(rutaContrato);
+
+   res.json(resultado);
+});
+
 
 module.exports = router;

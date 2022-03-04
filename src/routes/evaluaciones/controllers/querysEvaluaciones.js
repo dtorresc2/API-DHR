@@ -125,10 +125,31 @@ const actualizarSaldoEvaluacion = (
    });
 }
 
+// Eliminar Evaluacion
+const eliminarEvaluacion = ({
+   ID_USUARIO,
+   ID_EVALUACION
+}) => {
+   return new Promise((resolve, reject) => {
+      const query = 'CALL pa_evaluaciones_eliminar(?,?)';
+
+      mysqlConnection.query(query, [ID_USUARIO, ID_EVALUACION], (err, rows, fields) => {
+         if (!err) {
+            resolve(rows[0]);
+         }
+         else {
+            reject({ ID: -1, MENSAJE: "ERROR", ERROR: err });
+         }
+      });
+   });
+}
+
+
 module.exports = {
    registrarEvaluacion: registrarEvaluacion,
    actualizarEvaluacion: actualizarEvaluacion,
    obtenerListadoEvaluaciones: obtenerListadoEvaluaciones,
    obtenerConteoEvaluaciones: obtenerConteoEvaluaciones,
-   actualizarSaldoEvaluacion: actualizarSaldoEvaluacion
+   actualizarSaldoEvaluacion: actualizarSaldoEvaluacion,
+   eliminarEvaluacion: eliminarEvaluacion
 }
